@@ -43,7 +43,7 @@ export default function Home() {
       </div>
 
       {/* content */}
-      <div className="w-[90%]  text-white flex flex-col md:justify-start  md:items-start items-center  h-full md:py-14 py-4 pb-0 md:pb-0 md:gap-4 gap-1">
+      <div className="w-[90%]  text-white flex flex-col md:justify-start  md:items-start items-center  h-full md:py-14 py-4 pb-20 md:pb-0 md:gap-4 gap-1">
         {/* latest wrapper */}
         <div className="w-full flex justify-start md:items-start items-center ">
           {/* latest container */}
