@@ -53,7 +53,7 @@ export default function AddPost() {
           <div className="md:w-1/2 w-full flex flex-col gap-4">
             {/* title input */}
             <input
-              className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5]"
+              className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
               type="text"
               name="title"
               id="title"
@@ -62,7 +62,7 @@ export default function AddPost() {
 
             {/* slug */}
             <input
-              className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5]"
+              className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
               type="text"
               name="slug"
               id="slug"
@@ -71,7 +71,7 @@ export default function AddPost() {
 
             {/*  text editor */}
             <input
-              className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5]"
+              className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
               type="text"
               name="content"
               id="content"
@@ -83,7 +83,7 @@ export default function AddPost() {
           <div className="md:w-[30%] w-full flex flex-col gap-4">
             {/* file input */}
             <input
-              className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5]"
+              className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
               type="file"
               name="file"
               id="file"
@@ -92,7 +92,7 @@ export default function AddPost() {
 
             {/* status input */}
             <select
-              className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5]"
+              className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
               name=""
               id=""
             >
