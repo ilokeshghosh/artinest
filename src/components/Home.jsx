@@ -22,7 +22,7 @@ export default function Home() {
         {/* profile icon and nav content*/}
         <ul className="w-full flex md:pr-0 pr-5  md:flex-col flex-row md:justify-center justify-evenly items-center md:gap-6 gap-2 ">
           <li className="w-full flex justify-center items-center">
-            <FaRegUser className="text-[#6EEB83] md:text-6xl text-5xl " />
+            <FaRegUser className="text-[#6EEB83] text-4xl " />
           </li>
           <li className="w-full  flex flex-col justify-center items-center">
             <IoIosSearch className="text-[#6EEB83] text-4xl font-bold" />
