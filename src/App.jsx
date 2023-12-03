@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import { SignUp } from './components'
+import { Login, SignUp,Home } from './components'
+import './index.css'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -9,7 +10,11 @@ function App() {
   return (
   //  <h1 className='text-red-500 text-5xl text-center'>👷🏿‍♂️Project under Construction 🚧</h1>
 
-  <SignUp/>
+  // <SignUp/>
+
+  // <Login/>
+
+  <Home/>
 
   )
 }
