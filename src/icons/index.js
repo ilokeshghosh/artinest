@@ -3,4 +3,5 @@ import { IoIosSearch, IoMdTrendingUp, IoIosAddCircleOutline  } from "react-icons
 import { FaRegUser } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineEdit } from "react-icons/md";
-export { LuBellRing, IoIosSearch, IoMdTrendingUp, CgProfile, IoIosAddCircleOutline,FaRegUser,MdOutlineEdit  }
+import { BiSearchAlt } from "react-icons/bi";
+export { LuBellRing, IoIosSearch, IoMdTrendingUp, CgProfile, IoIosAddCircleOutline,FaRegUser,MdOutlineEdit,BiSearchAlt }
