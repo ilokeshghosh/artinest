@@ -1,7 +1,7 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
-import { Login, SignUp, Home, Post,AddPost } from "./components";
+import { Login, SignUp, Home, Post,AddPost,Profile } from "./components";
 import "./index.css";
 
 function App() {
@@ -16,7 +16,9 @@ function App() {
 
     // <Home />
 
-    <AddPost />
+    // <AddPost />
+
+    <Profile/>
     
   );
 }
