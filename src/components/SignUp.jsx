@@ -1,7 +1,33 @@
 // import "../index.css";
+import { Link, useNavigate } from "react-router-dom";
 import { LuBellRing } from "../icons/index";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import { data } from "autoprefixer";
+import { Input,Button } from "./index";
+import authService from "../appwrite/auth";
+import { login } from "../store/authSlice";
 // import { Link } from "react-router-dom";
 export default function SignUp() {
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const { register, handleSubmit } = useForm();
+
+  const create = async (data) => {
+    setError("");
+    try {
+      const userData = await authService.createAccount(data);
+      if (userData) {
+        const userData = await authService.getCurrentUser();
+        if (userData) dispatch(login({ userData }));
+        navigate("/");
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
   return (
     // wrapper
     <div className="w-full h-screen flex ">
@@ -63,57 +89,67 @@ export default function SignUp() {
           </div>
         </div>
 
+        {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
         {/* form section*/}
         <div className=" w-full text-white h-full ">
-          <form className="md:w-[90%] w-full h-full flex flex-col  item-start md:gap-6 gap-4 px-4 md:px-0">
+          <form
+            onSubmit={handleSubmit(create)}
+            className="md:w-[90%] w-full h-full flex flex-col  item-start md:gap-6 gap-4 px-4 md:px-0"
+          >
             {/* name */}
-            <input
+            <Input
               className="border-[#6EEB83] text-lg bg-transparent px-6 h-14 border-2 outline-none w-full"
-              type="text"
-              name="name"
-              id="name"
               placeholder="Enter Your Name"
               style={{ fontFamily: "Lexend Deca, sans-serif" }}
+              {...register("name", {
+                required: true,
+              })}
             />
 
             {/* email */}
-            <input
+            <Input
               className="border-[#6EEB83] text-lg bg-transparent px-6 h-14 border-2 outline-none w-full"
               type="email"
-              name="email"
-              id="email"
               placeholder="Enter Your Email"
               style={{ fontFamily: "Lexend Deca, sans-serif" }}
+              {...register("email", {
+                required: true,
+                validate: {
+                  matchPatern: (value) =>
+                    /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+                    "Email address must be a valid address",
+                },
+              })}
             />
 
             {/* password */}
-            <input
+            <Input
               className="border-[#6EEB83] text-lg bg-transparent px-6 h-14 border-2 outline-none w-full"
               type="password"
-              name="password"
-              id="password"
               placeholder="Enter Your Password"
               style={{ fontFamily: "Lexend Deca, sans-serif" }}
+              {...register("password", {
+                required: true,
+              })}
             />
 
             {/* retype password */}
-            <input
+            {/* <input
               className="border-[#6EEB83] text-lg bg-transparent px-6 h-14 border-2 outline-none w-full"
               type="password"
               name="re-password"
               id="retype-password"
               placeholder="Re-enter Your Password"
               style={{ fontFamily: "Lexend Deca, sans-serif" }}
-            />
+            /> */}
 
             {/* submit button */}
             <div className="flex items-center justify-between gap-10 md:gap-0">
-              <input
+              <Button
                 className="bg-[#6EEB83] cursor-pointer md:text-xl text-lg font-bold text-center md:px-10 px-5 py-2 md:py-4 text-black"
                 type="submit"
-                value="SUBMIT"
                 style={{ fontFamily: "Lexend Deca, sans-serif" }}
-              />
+              >Create Account</Button>
 
               <div
                 className="text-lg flex flex-col items-end md:items-start justify-center"
@@ -121,7 +157,9 @@ export default function SignUp() {
               >
                 <h3 className="w-full ">already have an account?</h3>
                 {/* <Link to='/' className="text-[#6EEB83]">log-in</Link> */}
+                <Link to='/login'>
                 <h3 className="text-[#6EEB83] cursor-pointer w-full">log-in</h3>
+                </Link>
               </div>
             </div>
           </form>
