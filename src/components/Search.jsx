@@ -9,9 +9,9 @@ import {
 
 export default function Search() {
   return (
-    <div >
+    <div  className="">
 
-      <div className="w-[90%]  relative flex justify-center items-center md:mb-5">
+      <div className="md:w-[90%]  relative flex justify-center items-center mb-5">
         <label
           className="text-[#6EEB83] md:text-3xl text-xl absolute top-3 right-8"
           htmlFor="search"

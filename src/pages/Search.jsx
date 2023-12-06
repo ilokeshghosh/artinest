@@ -2,7 +2,7 @@ import { Container, SearchComponent } from "../components";
 
 export default function Profile() {
   return (
-    <Container>
+    <Container className="overflow-y-auto no-scrollbar">
       <SearchComponent />
     </Container>
   );

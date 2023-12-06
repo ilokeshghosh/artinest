@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import appwriteService from "../appwrite/config";
 import { Container } from "../components/";
 import { Fragment } from "react";
-import {PostCard} from '../components/index'
-import { setPosts } from '../store/postSlice';
+import { PostCard } from "../components/index";
+import { setPosts } from "../store/postSlice";
 export default function () {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.post.posts);
@@ -20,30 +20,57 @@ export default function () {
   }, []);
 
   if (posts.length === 0) {
-    <Container>
-      <div className="flex flex-wrap">
-        <div className="p-2 w-full">
-          {status ? (
-            <h1 className="text-2xl font-bold hover:text-gray-500">
-              No Post to read
-            </h1>
-          ) : (
-            <h1 className="text-2xl font-bold hover:text-gray-500 text-white">
-              Login to read and write post
-            </h1>
-          )}
+    return (
+      <Container>
+        {/* latest wrapper */}
+        <div className="w-full  flex justify-start md:items-start items-center ">
+          {/* latest container */}
+          <div className="flex flex-col items-center justify-center self-start md:w-[10%] w-full">
+            <p className="border-2 rounded-full border-[#6EEB83] w-10"></p>
+            <h3
+              className="text-xl"
+              style={{ fontFamily: "Lexend Deca, sans-serif" }}
+            >
+              Latest
+            </h3>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap ">
+          <div className="p-2 w-full text-red-500 font-bold text-xl">
+            <h1>No Post To Show</h1>
+          </div>
+        </div>
+      </Container>
+    );
+  }
+  return (
+    <Container className="overflow-y-auto no-scrollbar">
+      {/* wrapper */}
+      <div className=" w-full h-full flex flex-col bg-cover gap-5    py-10 md:py-0">
+        {/* latest wrapper */}
+        <div className="w-full flex justify-start  md:items-start items-center ">
+          {/* latest container */}
+          <div className="flex flex-col md:items-start items-center  justify-center self-start md:w-16 w-full">
+            <p className="border-2 rounded-full mx-auto border-[#6EEB83] w-10"></p>
+            <h3
+              className="text-xl"
+              style={{ fontFamily: "Lexend Deca, sans-serif" }}
+            >
+              Latest
+            </h3>
+          </div>
+        </div>
+
+        {/* post card gap */}
+        <div className="py-10 pb-56">
+          {posts.map((post) => (
+            <div className="flex flex-col gap-10" key={post.$id}>
+              <PostCard {...post} />
+            </div>
+          ))}
         </div>
       </div>
-    </Container>;
-  }
-  return <Container>
-   
-    {
-        posts.map((post)=>{
-            <Fragment key={post.$id}>
-                <PostCard {...post} />
-            </Fragment>
-        })
-    }
-  </Container>;
+    </Container>
+  );
 }

@@ -18,7 +18,7 @@ export default function LogoutBtn(){
         <button 
         onClick={logoutHandler}
         className=''
-        ><MdOutlineLogout className="text-[#6EEB83] text-4xl " /></button>
+        ><MdOutlineLogout className="text-[#6EEB83] text-2xl md:text-4xl " /></button>
     )
 
 }

@@ -4,19 +4,22 @@ import { Link } from "react-router-dom";
 import { HashTags } from "./index";
 import { Fragment } from "react";
 import { ID} from "appwrite";
+import parse from "html-react-parser";
 
 export default function PostCard({
   $id,
   title,
-  // date,
-  // month,
-  // userName,
+  $createdAt,
   content,
+  userName
   // hashTags,
 }) {
+
+  const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
   return (
-    <Link to={`/post/${$id}`}>
-      <div className="md:w-[90%] w-[95%] py-5 md:h-[300px] flex md:flex-row flex-col-reverse md:gap-6 gap-2 ">
+    
+      
+      <div className="md:w-[90%] w-[100%] py-5    md:h-[250px] flex md:flex-row flex-col-reverse md:gap-6 gap-2 justify-end md:justify-start">
         {/* meta data */}
         <div
           className=" md:h-full   md:w-[5%] w-full px-2 md:px-0 flex md:flex-col flex-row md:items-end justify-between md:justify-start items-center "
@@ -24,18 +27,18 @@ export default function PostCard({
         >
           {/* date container */}
           <div className=" md:w-full w-1/2  md:text-2xl text-lg font-bold gap-2 md:gap-0 flex md:flex-col md:justify-center items-end">
-            <h2>27</h2>
-            <h2>MAY</h2>
+            <h2>{new Date($createdAt).getDate()<10 ? ('0'+new Date($createdAt).getDate()):new Date($createdAt).getDate()}</h2>
+            <h2>{months[new Date($createdAt).getMonth()]}</h2>
           </div>
 
           {/* username container */}
-          <h1 className=" md:h-32 md:w-32 flex md:-rotate-90 items-end justify-center">
-            @lokesh43
+          <h1 className=" md:h-28 md:w-24 flex md:-rotate-90 items-end justify-center">
+            {userName}
           </h1>
         </div>
 
         {/* content */}
-        <div className="h-full md:w-[80%] w-[90%] mx-auto md:mx-0 flex flex-col  gap-4 text-center md:text-start">
+        <div className="md:h-full md:w-[80%] w-[90%] mx-auto md:mx-0 flex flex-col  gap-4 text-center md:text-start ">
           <h1
             className="md:text-2xl text-lg text-[#6EEB83] not-italic font-400"
             style={{ fontFamily: "DM Serif Display, sans-serif" }}
@@ -47,13 +50,16 @@ export default function PostCard({
           <div className="w-full flex flex-col gap-5">
             {/* para section */}
             <div
-              className="md:text-lg  text-sm"
+              className="md:text-lg  text-sm inline"
               style={{ fontFamily: "Lexend Deca, sans-serif" }}
             >
-              <h4 className="inline">{content}</h4>
+              {parse(content)}
+              <Link to={`/post/${$id}`}>
               <h4 className="inline text-[#6EEB83] cursor-pointer">
                 ...read more
               </h4>
+              </Link>
+             
             </div>
 
             {/* hastag section */}
@@ -68,7 +74,7 @@ export default function PostCard({
             </div>
           </div>
         </div>
+
       </div>
-    </Link>
   );
 }

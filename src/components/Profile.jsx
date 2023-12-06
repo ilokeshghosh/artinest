@@ -7,7 +7,7 @@ import {
 } from "../icons";
 export default function profile() {
   return (
-    <div className="w-[90%] md:pl-52  text-white flex flex-col md:justify-start  md:items-start items-center  h-full md:py-14 py-4 pb-20 md:pb-0 md:gap-2 gap-4">
+    <div className="w-[90%] md:pl-2  text-white flex flex-col md:justify-start  md:items-start items-center  h-full md:py-1 py-4 pb-20 md:pb-0 md:gap-2 gap-4">
       {/* profile wrapper */}
       <div className="w-full flex  justify-start md:items-start items-center">
         {/* latest container */}
@@ -123,6 +123,7 @@ export default function profile() {
           </div>
         </form>
       </div>
+
     </div>
   );
 }

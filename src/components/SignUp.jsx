@@ -1,11 +1,11 @@
 // import "../index.css";
 import { Link, useNavigate } from "react-router-dom";
 import { LuBellRing } from "../icons/index";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { data } from "autoprefixer";
-import { Input,Button } from "./index";
+import { Input, Button } from "./index";
 import authService from "../appwrite/auth";
 import { login } from "../store/authSlice";
 // import { Link } from "react-router-dom";
@@ -13,21 +13,71 @@ export default function SignUp() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, watch, setValue } = useForm();
 
-  const create = async (data) => {
+  const create = async (data) => { 
     setError("");
     try {
       const userData = await authService.createAccount(data);
       if (userData) {
         const userData = await authService.getCurrentUser();
-        if (userData) dispatch(login({ userData }));
-        navigate("/");
+        if (userData){
+          dispatch(login({ userData }))
+          const prefValue = {...data}.userName
+          console.log();
+          const pref = await authService.setPrefs(prefValue);
+          if(pref){
+            navigate("/");
+          }
+        } 
       }
     } catch (error) {
       setError(error.message);
     }
   };
+
+  const userNameTransform = useCallback((value) => {
+    if (value && typeof value === "string") {
+      const trimmedLowercaseValue = value.trim().toLowerCase();
+
+      // Extract up to the first 8 alphabetical characters
+      const extractedUsername = trimmedLowercaseValue.match(/^[a-zA-Z]{1,5}/);
+
+      const now = new Date();
+      const uniqueIdentifier = `${now
+        .getHours()
+        .toString()
+        .padStart(2, "0")}${now.getMinutes().toString().padStart(2, "0")}${now
+          .getSeconds()
+          .toString()
+          .padStart(2, "0")}`;
+
+      // Ensure the total length is 12 characters
+      const truncatedUsername = extractedUsername
+        ? extractedUsername[0].slice(0, 8)
+        : "";
+      const finalUsername = `@${truncatedUsername}${uniqueIdentifier.slice(
+        0,
+        6
+      )}`;
+
+      return finalUsername;
+    }
+
+    return "";
+  }, []);
+
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name === "name") {
+        setValue("userName", userNameTransform(value.name), {
+          shouldValidate: true,
+        });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, userNameTransform, setValue]);
   return (
     // wrapper
     <div className="w-full h-screen flex ">
@@ -106,6 +156,19 @@ export default function SignUp() {
               })}
             />
 
+            {/* userName */}
+            <Input
+            readOnly
+              className="border-[#6EEB83] text-lg bg-transparent px-6 h-14 border-2 outline-none w-full "
+              style={{ fontFamily: "Lexend Deca, sans-serif" }}
+              {...register("userName", { required: true })}
+              onInput={(e) => {
+                setValue("userName", userNameTransform(e.currentTarget.value), {
+                  shouldValidate: true,
+                });
+              }}
+            />
+
             {/* email */}
             <Input
               className="border-[#6EEB83] text-lg bg-transparent px-6 h-14 border-2 outline-none w-full"
@@ -149,7 +212,9 @@ export default function SignUp() {
                 className="bg-[#6EEB83] cursor-pointer md:text-xl text-lg font-bold text-center md:px-10 px-5 py-2 md:py-4 text-black"
                 type="submit"
                 style={{ fontFamily: "Lexend Deca, sans-serif" }}
-              >Create Account</Button>
+              >
+                Create Account
+              </Button>
 
               <div
                 className="text-lg flex flex-col items-end md:items-start justify-center"
@@ -157,8 +222,10 @@ export default function SignUp() {
               >
                 <h3 className="w-full ">already have an account?</h3>
                 {/* <Link to='/' className="text-[#6EEB83]">log-in</Link> */}
-                <Link to='/login'>
-                <h3 className="text-[#6EEB83] cursor-pointer w-full">log-in</h3>
+                <Link to="/login">
+                  <h3 className="text-[#6EEB83] cursor-pointer w-full">
+                    log-in
+                  </h3>
                 </Link>
               </div>
             </div>

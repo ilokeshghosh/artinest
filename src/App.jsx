@@ -1,15 +1,7 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
-import {
-  Login,
-  SignUp,
-  Home,
-  Post,
-  AddPost,
-  ProfileComponent,
-  SearchComponent,
-} from "./components";
+
 import "./index.css";
 import { useDispatch } from "react-redux";
 import { Nav } from "./components";
@@ -52,7 +44,7 @@ function App() {
 
     <>
       {/* wrapper */}
-      <div className="w-full h-screen  flex md:flex-row flex-col-reverse justify-between items-center   bg-[#272727]">
+      <div className="w-full md:h-screen  flex md:flex-row flex-col-reverse justify-between items-center   bg-[#272727]">
         {/*nav bar  */}
         <Nav/>
 

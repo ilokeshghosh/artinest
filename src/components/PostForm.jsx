@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import appwriteService from "../appwrite/config";
+import authService from '../appwrite/auth'
+import { updatePosts } from "../store/postSlice";
 import { useCallback } from "react";
 import { useEffect } from "react";
 import { Button, Input, RTE, Select } from "./";
@@ -53,11 +55,11 @@ export default function PostForm({ post }) {
       //     const fileId = file.$id
       //     data.featuredImage = fileId;
       // }
-
+      // console.log('{...userData}.prefs.userName',{...userData}.prefs.userName);
       const dbPost = await appwriteService.createPost({
         ...data,
         userId: userData.$id,
-        userName: userData.userName,
+        userName: {...userData}.prefs.userName,
       });
 
       if (dbPost) {
@@ -87,14 +89,17 @@ export default function PostForm({ post }) {
     return () => subscription.unsubscribe();
   }, [watch, slugTransform, setValue]);
 
+  
+
+
   return (
     <form
       onSubmit={handleSubmit(submit)}
-      className="w-full flex flex-col md:flex-row gap-4 "
+      className="w-full flex flex-col md:flex-row gap-4 pb-14"
       style={{ fontFamily: "Lexend Deca, sans-serif" }}
     >
       {/* left section */}
-      <div className="md:w-1/2 w-full flex flex-col gap-4">
+      <div className="md:w-1/2 w-full flex flex-col gap-4 ">
         {/* title input */}
         <Input
           className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
@@ -104,9 +109,10 @@ export default function PostForm({ post }) {
         />
 
         {/* slug */}
-        <input
+        <Input
           className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
           type="text"
+          readOnly
           id="slug"
           placeholder="Slug"
           {...register("slug", { required: true })}
@@ -119,7 +125,7 @@ export default function PostForm({ post }) {
 
         {/*  text editor */}
         <RTE
-          className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
+          className="w-full  border-[#6EEB83] border-2 h-[25rem] overflow-y-hidden rounded-xl   bg-transparent text-[#A5A5A5] outline-none"
           name="content"
           control={control}
           id="content"
@@ -128,16 +134,15 @@ export default function PostForm({ post }) {
       </div>
 
       {/* right section */}
-      <div className="md:w-[30%] w-full flex flex-col gap-4">
+      <div className="md:w-[30%] w-full flex flex-col gap-4 ">
         {/* file input */}
-        <Input
+        {/* <Input
           className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
           type="file"
           id="file"
-          //   placeholder="Choose File"
           accept="image/png, image/jpg, image/jpeg, image/gif"
           {...register("image", { required: !post })}
-        />
+        /> */}
 
         {/* {post && (
           <div className="w-full mb-4">

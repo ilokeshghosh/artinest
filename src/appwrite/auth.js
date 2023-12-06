@@ -14,13 +14,32 @@ export class AuthService {
 
     async createAccount({ email, password, name, userName }) {
         try {
+            console.log('userName', userName);
             const userAccount = await this.account.create(ID.unique(), email, password, name, userName);
+           
             if (userAccount) {
                 return this.login({ email, password })
             } else {
                 return userAccount;
             }
         } catch (error) {
+            throw error;
+        }
+    }
+
+    async setPrefs(userNameValue){
+        console.log('value is set in setpref',userNameValue);
+        try {
+            return await this.account.updatePrefs({userName:userNameValue})
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getPrefs(){
+        try {
+            return await this.account.getPrefs()
+        } catch (error) {   
             throw error;
         }
     }

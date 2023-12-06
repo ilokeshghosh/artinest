@@ -1,7 +1,6 @@
 
 import Home from './Home'
 import Post from './Post'
-import AddPost from './AddPost'
 import ProfileComponent from './Profile'
 import SearchComponent from './Search'
 import HashTags from './HashTags/HashTags'
@@ -17,4 +16,4 @@ import SignUp from './SignUp'
 import Login from './Login'
 import AuthLayout from './AuthLayout'
 import LogoutBtn from './LogoutBtn'
-export {Home, Post,AddPost,ProfileComponent,SearchComponent,HashTags,Container,Input,RTE,Select,Button,PostCard,PostForm,Nav,Login,SignUp,AuthLayout,LogoutBtn}
+export {Home, Post,ProfileComponent,SearchComponent,HashTags,Container,Input,RTE,Select,Button,PostCard,PostForm,Nav,Login,SignUp,AuthLayout,LogoutBtn}

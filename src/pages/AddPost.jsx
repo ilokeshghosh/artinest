@@ -2,7 +2,7 @@ import { Container, PostForm } from "../components";
 
 export default function AddPost(){
     return(
-        <Container>
+        <Container className="bg-fixed">
             <PostForm/>
         </Container>
     )
