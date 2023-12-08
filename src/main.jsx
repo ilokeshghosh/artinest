@@ -15,11 +15,13 @@ import { AuthLayout } from "./components";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import Construction from "./pages/Construction.jsx";
+import Error from "./pages/Error.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement:<Error/>,
     children: [
       {
         path: "",
@@ -91,12 +93,12 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      
+
       {/* main router */}
-      {/* <RouterProvider router={router} /> */}
+      <RouterProvider router={router} />
 
       {/* maintenance page */}
-      <Construction />
+      {/* <Construction /> */}
 
     </Provider>
   </React.StrictMode>
