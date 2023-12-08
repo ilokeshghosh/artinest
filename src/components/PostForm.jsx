@@ -8,6 +8,7 @@ import { updatePosts } from "../store/postSlice";
 import { useCallback } from "react";
 import { useEffect } from "react";
 import { Button, Input, RTE, Select } from "./";
+import { updateStatus, clearStatus } from "../store/statusSlice";
 
 export default function PostForm({ post }) {
   const userData = useSelector((state) => state.auth.userData);
@@ -32,22 +33,35 @@ export default function PostForm({ post }) {
       //     appwriteService.deleteFile(post.featuredImage);
       // }
 
-      const dbPost = await appwriteService.updatePost(post.$id, { ...data });
+      try {
+        const dbPost = await appwriteService.updatePost(post.$id, { ...data });
 
-      if (dbPost) {
-        dispatch(
-          updatePosts({
-            slug: post.$id,
-            data: {
-              title: data.title,
-              content: data.content,
-              status: data.status,
-            },
-          })
-        );
+        if (dbPost) {
+          dispatch(
+            updatePosts({
+              slug: post.$id,
+              data: {
+                title: data.title,
+                content: data.content,
+                status: data.status,
+              },
+            })
+          );
 
-        navigate(`/post/${dbPost.$id}`);
+          dispatch(updateStatus({ text: "Post Updated", error: false }));
+          setTimeout(() => {
+            dispatch(clearStatus());
+          }, 2000);
+          navigate(`/post/${dbPost.$id}`);
+        }
+      } catch (error) {
+        dispatch(updateStatus({ text: error.message, error: true }));
+        setTimeout(() => {
+          dispatch(clearStatus());
+        }, 3000)
       }
+
+
     } else {
       // const file = await appwriteService.uploadFile(data.image[0]);
 
@@ -56,15 +70,28 @@ export default function PostForm({ post }) {
       //     data.featuredImage = fileId;
       // }
       // console.log('{...userData}.prefs.userName',{...userData}.prefs.userName);
-      const dbPost = await appwriteService.createPost({
-        ...data,
-        userId: userData.$id,
-        userName: {...userData}.prefs.userName,
-      });
 
-      if (dbPost) {
-        navigate(`/post/${dbPost.$id}`);
+      try {
+        const dbPost = await appwriteService.createPost({
+          ...data,
+          userId: userData.$id,
+          userName: { ...userData }.prefs.userName,
+        });
+
+        if (dbPost) {
+          dispatch(updateStatus({ text: "Post Created", error: false }));
+          setTimeout(() => {
+            dispatch(clearStatus());
+          }, 2000);
+          navigate(`/post/${dbPost.$id}`);
+        }
+      } catch (error) {
+        dispatch(updateStatus({ text: error.message, error: true }));
+        setTimeout(() => {
+          dispatch(clearStatus());
+        }, 3000)
       }
+
     }
   };
 
@@ -89,7 +116,7 @@ export default function PostForm({ post }) {
     return () => subscription.unsubscribe();
   }, [watch, slugTransform, setValue]);
 
-  
+
 
 
   return (

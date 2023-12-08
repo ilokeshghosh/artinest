@@ -4,18 +4,24 @@ import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { login as authLogin } from "../store/authSlice";
+import { updateStatus, clearStatus } from "../store/statusSlice";
 import authService from "../appwrite/auth";
 import appwriteService from "../appwrite/config";
 import { Button, Input } from "./index";
+import { useSelector } from "react-redux";
 
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
+
+  // error
+  const errorStatus = useSelector((state) => state.status.status);
+  const error = useSelector((state) => state.status.error);
+  const text = useSelector((state) => state.status.text);
 
   const login = async (data) => {
-    setError("");
     try {
       const session = await authService.login(data);
       if (session) {
@@ -24,13 +30,23 @@ export default function Login() {
           const posts = await appwriteService.getPosts();
           if (posts) {
             dispatch(authLogin({ userData }));
+
+
+            dispatch(updateStatus({ text: "Logged In", error: false }));
+            setTimeout(() => {
+              dispatch(clearStatus());
+            }, 1000);
+
+
             navigate("/");
           }
         }
       }
     } catch (error) {
-      console.log("error in login", error);
-      setError(error.message);
+      dispatch(updateStatus({ text: error.message, error: true }));
+      setTimeout(() => {
+        dispatch(clearStatus());
+      }, 3000);
     }
   };
   return (
@@ -72,26 +88,32 @@ export default function Login() {
           </div>
 
           {/* notification section */}
-          <div className=" relative -top-10 right-0 hidden">
-            <div className="bg-[#FF5E5B]  flex items-center gap-[5rem] justify-between px-4 py-2">
-              {/* text */}
-              <div className="flex flex-col justify-center items-start w-[90%]">
-                <h3
-                  className=""
-                  style={{ fontFamily: "Lexend Deca, sans-serif" }}
-                >
-                  FAILED
-                </h3>
-                <h3
-                  className="w-full"
-                  style={{ fontFamily: "Lexend Deca, sans-serif" }}
-                >
-                  Login failed. Please try again.
-                </h3>
+          {errorStatus && (
+            <div className=" relative -top-10 right-0 ">
+              <div
+                className={`${
+                  error ? "bg-[#FF5E5B]" : "bg-[#6EEB83]"
+                }  flex items-center gap-[5rem] justify-between px-4 py-2`}
+              >
+                {/* text */}
+                <div className="flex flex-col justify-center items-start w-[90%]">
+                  <h3
+                    className=""
+                    style={{ fontFamily: "Lexend Deca, sans-serif" }}
+                  >
+                    FAILED
+                  </h3>
+                  <h3
+                    className="w-full"
+                    style={{ fontFamily: "Lexend Deca, sans-serif" }}
+                  >
+                    {text}
+                  </h3>
+                </div>
+                <LuBellRing className="text-3xl w-[10%]" />
               </div>
-              <LuBellRing className="text-3xl w-[10%]" />
             </div>
-          </div>
+          )}
         </div>
 
         {/* form section*/}

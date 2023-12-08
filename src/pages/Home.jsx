@@ -22,23 +22,25 @@ export default function () {
   if (posts.length === 0) {
     return (
       <Container>
-        {/* latest wrapper */}
-        <div className="w-full  flex justify-start md:items-start items-center ">
-          {/* latest container */}
-          <div className="flex flex-col items-center justify-center self-start md:w-[10%] w-full">
-            <p className="border-2 rounded-full border-[#6EEB83] w-10"></p>
-            <h3
-              className="text-xl"
-              style={{ fontFamily: "Lexend Deca, sans-serif" }}
-            >
-              Latest
-            </h3>
+        <div className="h-screen">
+          {/* latest wrapper */}
+          <div className="w-full  flex justify-start md:items-start items-center ">
+            {/* latest container */}
+            <div className="flex flex-col items-center justify-center self-start md:w-[10%] w-full">
+              <p className="border-2 rounded-full border-[#6EEB83] w-10"></p>
+              <h3
+                className="text-xl"
+                style={{ fontFamily: "Lexend Deca, sans-serif" }}
+              >
+                Latest
+              </h3>
+            </div>
           </div>
-        </div>
 
-        <div className="flex flex-wrap ">
-          <div className="p-2 w-full text-red-500 font-bold text-xl">
-            <h1>No Post To Show</h1>
+          <div className="flex flex-wrap">
+            <div className="p-2 w-full text-red-500 font-bold text-xl">
+              <h1>No Post To Show</h1>
+            </div>
           </div>
         </div>
       </Container>

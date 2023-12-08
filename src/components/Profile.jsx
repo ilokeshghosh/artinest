@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   IoIosSearch,
   IoMdTrendingUp,
@@ -5,7 +6,121 @@ import {
   IoIosAddCircleOutline,
   MdOutlineEdit,
 } from "../icons";
+import { useSelector } from "react-redux";
+import authService from "../appwrite/auth";
+import appwriteService from "../appwrite/config";
+import { get, useForm } from "react-hook-form";
+import { login } from "../store/authSlice";
+import { Button, Input } from "./index";
+import { useDispatch } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
+import { updateStatus, clearStatus } from "../store/statusSlice";
 export default function profile() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.auth.userData);
+  const [userName, setuserName] = useState();
+
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const { register, handleSubmit, setValue, control, getValues } = useForm();
+
+  useEffect(() => {
+    if (userData) {
+      setValue("name", userData.name || "");
+      setValue("email", userData.email || "");
+      // setuserName({...userData}.prefs.userName)
+      setValue("userName", { ...userData }.prefs.userName || "");
+
+      if (userData.prefs.avatar) {
+        const imgUrl = authService.getAvatarPreview(userData.prefs.avatar);
+        setValue("imgUrl", imgUrl);
+      } else {
+        const imgUrl = authService.getUserAvatar(userData.name);
+        setValue("imgUrl", imgUrl);
+      }
+    }
+  }, [userData, setValue]);
+
+  const submit = async (data) => {
+    if ({ ...userData }.prefs.avatar) {
+      try {
+        const file = data.image[0]
+          ? await authService.uploadAvatar(data.image[0])
+          : null;
+
+        if (file) {
+          await authService.deleteAvatar({ ...userData }.prefs.avatar);
+          const fileId = file.$id;
+          const pref = await authService.setPrefs(
+            "avatar",
+            fileId,
+            { ...userData }.prefs
+          );
+        }
+
+        const updateName = await authService.updateName(data.name);
+
+        if (updateName || file) {
+          const userData = await authService.getCurrentUser();
+          if (userData) {
+            dispatch(login({ userData }));
+
+            dispatch(updateStatus({ text: "Profile Updated", error: false }));
+            setTimeout(() => {
+              dispatch(clearStatus());
+            }, 2000);
+          }
+        }
+      } catch (error) {
+        dispatch(updateStatus({ text: error.message, error: true }));
+        setTimeout(() => {
+          dispatch(clearStatus());
+        }, 3000);
+      }
+    } else {
+      try {
+        const file = await authService.uploadAvatar(data.image[0]);
+        if (file) {
+          const fileId = file.$id;
+          const pref = await authService.setPrefs(
+            "avatar",
+            fileId,
+            { ...userData }.prefs
+          );
+        }
+
+        const updatedUser = await authService.updateName(data.name);
+
+        if (updatedUser || pref) {
+          if (updatedUser) {
+            const userData = await authService.getCurrentUser();
+            if (userData) {
+              dispatch(login({ updatedUser }));
+              dispatch(updateStatus({ text: "Profile Updated", error: false }));
+              setTimeout(() => {
+                dispatch(clearStatus());
+              }, 2000);
+            }
+          }
+
+          // navigate("/profile");
+        }
+      } catch (error) {
+        dispatch(updateStatus({ text: error.message, error: true }));
+        setTimeout(() => {
+          dispatch(clearStatus());
+        }, 3000);
+      }
+    }
+  };
+
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setSelectedImage(URL.createObjectURL(event.target.files[0]));
+    }
+  };
+
   return (
     <div className="w-[90%] md:pl-2  text-white flex flex-col md:justify-start  md:items-start items-center  h-full md:py-1 py-4 pb-20 md:pb-0 md:gap-2 gap-4">
       {/* profile wrapper */}
@@ -30,7 +145,10 @@ export default function profile() {
         className=" w-full py-1 pb-7"
         style={{ fontFamily: "Lexend Deca, sans-serif" }}
       >
-        <form className=" w-full flex md:flex-row flex-col-reverse justify-between gap-4 md:gap-0">
+        <form
+          onSubmit={handleSubmit(submit)}
+          className=" w-full flex md:flex-row flex-col-reverse justify-between gap-4 md:gap-0"
+        >
           {/* left section */}
           <div className="flex flex-col gap-4 md:w-1/2 w-full">
             {/* name */}
@@ -38,12 +156,13 @@ export default function profile() {
               <label className="text-center md:text-start" htmlFor="name">
                 Name
               </label>
-              <input
+              <Input
                 className="outline-none bg-transparent text-center md:text-start border-2 border-[#6EEB83]  py-4 px-6 text-[#A5A5A5]"
                 type="text"
                 name="name"
                 id="name"
-                placeholder="Lokesh Ghosh"
+                {...register("name", { required: true })}
+                placeholder="Enter a Valid Name"
               />
             </div>
 
@@ -52,12 +171,13 @@ export default function profile() {
               <label className="text-center md:text-start" htmlFor="email">
                 Email
               </label>
-              <input
+              <Input
                 className="outline-none bg-transparent text-center md:text-start border-2 border-[#6EEB83]  py-4 px-6 text-[#A5A5A5]"
                 type="text"
                 name="email"
                 id="email"
-                placeholder="ghoshlokesh@example.com"
+                {...register("email", { required: true })}
+                placeholder="Enter a valid email"
               />
             </div>
 
@@ -66,26 +186,28 @@ export default function profile() {
               <label className="text-center md:text-start" htmlFor="username">
                 Username
               </label>
-              <input
+              <Input
+                readOnly
                 className="outline-none bg-transparent border-2 border-[#6EEB83] text-center md:text-start  py-4 px-6 text-[#A5A5A5]"
                 type="text"
                 name="username"
                 id="username"
-                placeholder="@lokeshghosh323"
+                {...register("userName", { required: true })}
+                // value={userName}
               />
             </div>
 
             {/* update button */}
-            <input
+            <Button
               className="bg-[#6EEB83] text-black font-bold py-4 px-6 mt-10"
               type="submit"
-              value="Update Profile"
-            />
-            <input
-              className="bg-[#FF5E5B] text-black font-bold py-4 px-6"
-              type="submit"
-              value="Delete Account"
-            />
+            >
+              Update Profile
+            </Button>
+
+            <Button className="bg-[#FF5E5B] hidden text-black font-bold py-4 px-6">
+              Delete Account
+            </Button>
           </div>
 
           {/* right section */}
@@ -101,7 +223,15 @@ export default function profile() {
               <div className="border-4 border-[#6EEB83] rounded-full md:w-[210px] w-[150px] h-[150px] md:h-[210px] ml-3">
                 <img
                   className="w-full h-full rounded-full p-[0.4px]"
-                  src="https://ik.imagekit.io/8fgpvoiai/profile/out._Vt6Gk9Ia-p.jpg?updatedAt=1700229684772"
+                  src={
+                    selectedImage
+                      ? selectedImage
+                      : { ...userData }.prefs.avatar
+                      ? authService.getAvatarPreview(
+                          { ...userData }.prefs.avatar
+                        )
+                      : authService.getUserAvatar(userData.name)
+                  }
                   alt="profile-img"
                 />
               </div>
@@ -114,16 +244,18 @@ export default function profile() {
                 </label>
                 <input
                   className="hidden"
+                  accept="image/png, image/jpg, image/jpeg, image/gif"
                   type="file"
                   name="profile-img"
                   id="profile-img"
+                  {...register("image")}
+                  onInput={onImageChange}
                 />
               </div>
             </div>
           </div>
         </form>
       </div>
-
     </div>
   );
 }

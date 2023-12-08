@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { setPosts } from "../store/postSlice";
 import { Container,PostForm } from "../components";
+import { updateStatus, clearStatus } from "../store/statusSlice";
 
 export default function EditPost(){
     const dispatch = useDispatch()
@@ -21,7 +22,10 @@ export default function EditPost(){
                 dispatch(setPosts(parsedPost));
             }
         }catch(error){
-            console.log('ERROR IS PAGES :: EDITPOST ::',error);
+            dispatch(updateStatus({ text: error.message, error: true }));
+            setTimeout(() => {
+              dispatch(clearStatus());
+            }, 3000);
         }
     },[]);
 
@@ -31,6 +35,10 @@ export default function EditPost(){
             const currentPost = posts.find(post=>post.$id === slug);
             setPost(currentPost);
         }else{
+            dispatch(updateStatus({ text: 'Post Not Found', error: true }));
+            setTimeout(() => {
+              dispatch(clearStatus());
+            }, 3000);
             navigate('/');
         }
     },[slug, navigate,posts])

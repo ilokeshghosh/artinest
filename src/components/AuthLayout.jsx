@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setPosts } from "../store/postSlice";
+import { updateStatus, clearStatus } from "../store/statusSlice";
 
 export default function Protected({ children, authentication = true }) {
     const navigate = useNavigate();
@@ -15,6 +16,10 @@ export default function Protected({ children, authentication = true }) {
         if (authentication && authStatus !== authentication) {
             dispatch(setPosts([]));
             localStorage.setItem("posts", null);
+            dispatch(updateStatus({ text: "Logged Out", error: false }));
+            setTimeout(() => {
+              dispatch(clearStatus());
+            }, 2000);
             navigate("/login");
         } else if (!authentication && authStatus !== authentication) {
             

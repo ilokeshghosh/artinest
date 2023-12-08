@@ -7,6 +7,7 @@ import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useEffect } from "react";
 import {FaEdit,MdOutlineDeleteForever} from '../icons'
+import { updateStatus, clearStatus } from "../store/statusSlice";
 
 export default function Post() {
   const [post, setPost] = useState(null);
@@ -31,6 +32,10 @@ export default function Post() {
       const currentPost = posts.find((post) => post.$id === slug);
       setPost(currentPost);
     } else {
+      dispatch(updateStatus({ text: 'Post Not Found', error: true }));
+      setTimeout(() => {
+        dispatch(clearStatus());
+      }, 3000);
       navigate("/");
     }
   }, [slug, navigate, posts]);
@@ -38,6 +43,10 @@ export default function Post() {
   const deletePost = () => {
     appwriteService.deletePost(post.$id).then((status) => {
       if (status) {
+        dispatch(updateStatus({ text: 'Post Deleted', error: false }));
+            setTimeout(() => {
+              dispatch(clearStatus());
+            }, 3000);
         navigate("/");
       }
     });

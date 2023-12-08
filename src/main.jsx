@@ -8,12 +8,13 @@ import EditPost from "./pages/EditPost.jsx";
 import AddPost from "./pages/AddPost.jsx";
 import Post from "./pages/Post.jsx";
 import Home from "./pages/Home.jsx";
-import Profile from './pages/Profile.jsx'
-import Search from './pages/Search.jsx'
+import Profile from "./pages/Profile.jsx";
+import Search from "./pages/Search.jsx";
 import store from "./store/store.js";
 import { AuthLayout } from "./components";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import Construction from "./pages/Construction.jsx";
 
 const router = createBrowserRouter([
   {
@@ -45,22 +46,24 @@ const router = createBrowserRouter([
             <EditPost />
           </AuthLayout>
         ),
-      },{
-        path:"/profile",
-        element :(
+      },
+      {
+        path: "/profile",
+        element: (
           <AuthLayout authentication>
             {" "}
-            <Profile/>
+            <Profile />
           </AuthLayout>
-        )
-      },{
-        path:'/search',
-        element:(
+        ),
+      },
+      {
+        path: "/search",
+        element: (
           <AuthLayout authentication>
-            {' '}
-            <Search/>
+            {" "}
+            <Search />
           </AuthLayout>
-        )
+        ),
       },
       {
         path: "/post/:slug",
@@ -88,7 +91,13 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      
+      {/* main router */}
+      {/* <RouterProvider router={router} /> */}
+
+      {/* maintenance page */}
+      <Construction />
+
     </Provider>
   </React.StrictMode>
 );
