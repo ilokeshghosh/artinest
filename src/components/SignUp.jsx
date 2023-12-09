@@ -26,10 +26,10 @@ export default function SignUp() {
       if (userData) {
         const userData = await authService.getCurrentUser();
         if (userData) {
-          dispatch(login({ userData }));
           const prefValue = { ...data }.userName;
           const pref = await authService.setPrefs("userName", prefValue);
           if (pref) {
+            dispatch(login({ userData }));
             dispatch(updateStatus({ text: "Account Created", error: false }));
             setTimeout(() => {
               dispatch(clearStatus());
@@ -140,7 +140,7 @@ export default function SignUp() {
                     className=""
                     style={{ fontFamily: "Lexend Deca, sans-serif" }}
                   >
-                    FAILED
+                     {error ? 'FAILED' : 'SUCCESS'}
                   </h3>
                   <h3
                     className="w-full"
@@ -176,7 +176,7 @@ export default function SignUp() {
             <Input
               readOnly
               placeholder='User Name (Auto Generated)'
-              className="border-[#6EEB83] text-lg bg-transparent px-6 h-14 border-2 outline-none w-full "
+              className="border-[#6EEB83] hidden text-lg bg-transparent px-6 h-14 border-2 outline-none w-full "
               style={{ fontFamily: "Lexend Deca, sans-serif" }}
               {...register("userName", { required: true })}
               onInput={(e) => {

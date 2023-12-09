@@ -95,10 +95,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
 
       {/* main router */}
-      {/* <RouterProvider router={router} /> */}
+      <RouterProvider router={router} />
 
       {/* maintenance page */}
-      <Construction />
+      {/* <Construction /> */}
 
     </Provider>
   </React.StrictMode>

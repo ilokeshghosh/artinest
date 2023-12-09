@@ -47,7 +47,7 @@ export default function () {
     );
   }
   return (
-    <Container className="overflow-y-auto no-scrollbar">
+    <Container className="overflow-y-auto no-scrollbar h-screen">
       {/* wrapper */}
       <div className=" w-full h-full flex flex-col bg-cover gap-5    py-10 md:py-0">
         {/* latest wrapper */}

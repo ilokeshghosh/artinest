@@ -101,7 +101,7 @@ export default function Login() {
                     className=""
                     style={{ fontFamily: "Lexend Deca, sans-serif" }}
                   >
-                    FAILED
+                    {error ? 'FAILED' : 'SUCCESS'}
                   </h3>
                   <h3
                     className="w-full"

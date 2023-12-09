@@ -43,7 +43,39 @@ export default function profile() {
   }, [userData, setValue]);
 
   const submit = async (data) => {
-    if ({ ...userData }.prefs.avatar) {
+    if ({ ...userData }.prefs.avatar === undefined) {
+      try {
+        const file = await authService.uploadAvatar(data.image[0]);
+        if (file) {
+          const fileId = file.$id;
+          const pref = await authService.setPrefs(
+            "avatar",
+            fileId,
+            { ...userData }.prefs
+          );
+        }
+
+        const updatedUser = await authService.updateName(data.name);
+
+        if (updatedUser || pref) {
+          const userData = await authService.getCurrentUser();
+          if (userData) {
+            dispatch(login({ userData }));
+            dispatch(updateStatus({ text: "Profile Updated", error: false }));
+            setTimeout(() => {
+              dispatch(clearStatus());
+            }, 2000);
+          }
+
+          // navigate("/profile");
+        }
+      } catch (error) {
+        dispatch(updateStatus({ text: error.message, error: true }));
+        setTimeout(() => {
+          dispatch(clearStatus());
+        }, 3000);
+      }
+    } else {
       try {
         const file = data.image[0]
           ? await authService.uploadAvatar(data.image[0])
@@ -64,6 +96,7 @@ export default function profile() {
         if (updateName || file) {
           const userData = await authService.getCurrentUser();
           if (userData) {
+            
             dispatch(login({ userData }));
 
             dispatch(updateStatus({ text: "Profile Updated", error: false }));
@@ -78,40 +111,9 @@ export default function profile() {
           dispatch(clearStatus());
         }, 3000);
       }
-    } else {
-      try {
-        const file = await authService.uploadAvatar(data.image[0]);
-        if (file) {
-          const fileId = file.$id;
-          const pref = await authService.setPrefs(
-            "avatar",
-            fileId,
-            { ...userData }.prefs
-          );
-        }
 
-        const updatedUser = await authService.updateName(data.name);
 
-        if (updatedUser || pref) {
-          if (updatedUser) {
-            const userData = await authService.getCurrentUser();
-            if (userData) {
-              dispatch(login({ updatedUser }));
-              dispatch(updateStatus({ text: "Profile Updated", error: false }));
-              setTimeout(() => {
-                dispatch(clearStatus());
-              }, 2000);
-            }
-          }
 
-          // navigate("/profile");
-        }
-      } catch (error) {
-        dispatch(updateStatus({ text: error.message, error: true }));
-        setTimeout(() => {
-          dispatch(clearStatus());
-        }, 3000);
-      }
     }
   };
 
@@ -193,7 +195,7 @@ export default function profile() {
                 name="username"
                 id="username"
                 {...register("userName", { required: true })}
-                // value={userName}
+              // value={userName}
               />
             </div>
 
@@ -227,10 +229,10 @@ export default function profile() {
                     selectedImage
                       ? selectedImage
                       : { ...userData }.prefs.avatar
-                      ? authService.getAvatarPreview(
+                        ? authService.getAvatarPreview(
                           { ...userData }.prefs.avatar
                         )
-                      : authService.getUserAvatar(userData.name)
+                        : authService.getUserAvatar(userData.name)
                   }
                   alt="profile-img"
                 />
