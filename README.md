@@ -52,8 +52,8 @@ To experience Artinest Blog Platform, follow these simple steps:
 *Search Post*
 
 ## Technologies Used
-- Frontend: React.js (<img src="https://vitejs.dev/logo.svg" style="max-width:20px;" alt="React Logo">)
-- Backend: Appwrite (BaaS) (<img src="https://appwrite.io/assets/logotype/black.svg" style="max-width:80px;" alt="React Logo">)
+- Frontend: React.js (<img src="https://vitejs.dev/logo.svg" width="20" alt="React Logo">)
+- Backend: Appwrite (BaaS) (<img src="https://appwrite.io/assets/logotype/black.svg" width="80" alt="React Logo">)
 
 ## Deployment
 The project is currently deployed on Netlify and can be accessed at [Artinest Blog Platform](https://artinest.netlify.app).
