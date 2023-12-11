@@ -197,7 +197,7 @@ export default function PostForm({ post }) {
         <Input
           className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
           type="text"
-          placeholder="Enter Tags with Space"
+          placeholder="Enter Tags with Space like 'html css'"
           {...register("tags")}
         />
 

@@ -1,10 +1,12 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import {
   IoIosSearch,
   IoMdTrendingUp,
   FaRegUser,
   IoIosAddCircleOutline,
-  LuHome,LuSearch,LuUser
+  LuHome,
+  LuSearch,
+  LuUser,
 } from "../../icons";
 import { useSelector } from "react-redux";
 import { LogoutBtn } from "../";
@@ -26,39 +28,85 @@ export default function Nav() {
 
       {/* profile icon and nav content*/}
       <ul className="w-full flex md:pr-0 pr-5  md:flex-col flex-row md:justify-center justify-evenly items-center md:gap-6 gap-4 ">
+        {/* profile */}
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            `transition-transform duration-200 text-[#6EEB83] ${
+              isActive ? " text-white scale-[1.1]" : "text-[#6EEB83]"
+            }`
+          }
+        >
+          <li className="w-full flex flex-col justify-center items-center">
+            <LuHome className=" text-2xl md:text-4xl " />
+            <h3
+              className="text-sm md:text-base"
+              style={{ fontFamily: "Lexend Deca, sans-serif" }}
+            >
+              Home
+            </h3>
+          </li>
+        </NavLink>
 
         {/* profile */}
-        <Link to="/">
+        <NavLink
+          to="/profile"
+          className={({ isActive }) =>
+            `transition-transform duration-200 text-[#6EEB83] ${
+              isActive ? " text-white scale-[1.1]" : "text-[#6EEB83]"
+            }`
+          }
+        >
           <li className="w-full flex flex-col justify-center items-center">
-            <LuHome  className="text-[#6EEB83] text-2xl md:text-4xl " />
-            <h3 className="text-sm md:text-base" style={{ fontFamily: "Lexend Deca, sans-serif" }}>Home</h3>
+            <LuUser className=" text-2xl md:text-4xl " />
+            <h3
+              className="text-sm md:text-base"
+              style={{ fontFamily: "Lexend Deca, sans-serif" }}
+            >
+              profile
+            </h3>
           </li>
-        </Link>
-
-
-        {/* profile */}
-        <Link to="/profile">
-          <li className="w-full flex flex-col justify-center items-center">
-            <LuUser className="text-[#6EEB83] text-2xl md:text-4xl " />
-            <h3 className="text-sm md:text-base" style={{ fontFamily: "Lexend Deca, sans-serif" }}>profile</h3>
-          </li>
-        </Link>
+        </NavLink>
 
         {/* search */}
-        <Link to="/search">
+        <NavLink
+          className={({ isActive }) =>
+            `transition-transform duration-200 text-[#6EEB83] ${
+              isActive ? " text-white scale-[1.1]" : "text-[#6EEB83]"
+            }`
+          }
+          to="/search"
+        >
           <li className="w-full  flex flex-col justify-center items-center">
-            <LuSearch className="text-[#6EEB83] text-2xl md:text-4xl" />
-            <h3 className="text-sm md:text-base" style={{ fontFamily: "Lexend Deca, sans-serif" }}>search</h3>
+            <LuSearch className="text-2xl md:text-4xl" />
+            <h3
+              className="text-sm md:text-base"
+              style={{ fontFamily: "Lexend Deca, sans-serif" }}
+            >
+              search
+            </h3>
           </li>
-        </Link>
+        </NavLink>
 
         {/* create post */}
-        <Link to="/add-post">
+        <NavLink
+          to="/add-post"
+          className={({ isActive }) =>
+            `transition-transform duration-200  ${
+              isActive ? " text-white scale-[1.1]" : "text-[#6EEB83]"
+            }`
+          }
+        >
           <li className="w-full  flex flex-col justify-center items-center">
-            <IoIosAddCircleOutline className="text-[#6EEB83] text-2xl md:text-4xl " />
-            <h3 className="text-sm md:text-base" style={{ fontFamily: "Lexend Deca, sans-serif" }}>create</h3>
+            <IoIosAddCircleOutline className="text-2xl md:text-4xl " />
+            <h3
+              className="text-sm md:text-base"
+              style={{ fontFamily: "Lexend Deca, sans-serif" }}
+            >
+              create
+            </h3>
           </li>
-        </Link>
+        </NavLink>
 
         {/* <li className="w-full flex flex-col justify-center items-center ">
           <IoMdTrendingUp className="text-[#6EEB83] text-4xl font-bold" />

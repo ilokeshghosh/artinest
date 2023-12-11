@@ -83,19 +83,19 @@ export default function Search() {
   ];
 
   return (
-    <Container className="md:pl-8 md:py-2">
+    <Container className="md:pl-8 ">
       {/* wrapper */}
-      <div className="w-[100%] flex flex-col justify-center items-center">
+      <div className="w-[100%] h-screen flex flex-col justify-start items-center">
         <div className="w-full    relative flex justify-center items-center mb-5">
-          <form onSubmit={handleSubmit(submit)} className="w-full">
+          <form onSubmit={handleSubmit(submit)} className="w-full ">
             <button
-              className="text-[#6EEB83] md:text-3xl text-xl absolute top-3 right-8"
+              className="text-[#6EEB83] md:text-3xl text-lg absolute top-3 md:right-8 right-4"
               type="submit"
             >
               <BiSearchAlt />
             </button>
             <Input
-              className="px-9 py-2 w-full outline-none text-[#A5A5A5] md:text-xl text-lg border-2 border-[#6EEB83] rounded-full bg-transparent "
+              className="px-9  py-2 w-full outline-none text-[#A5A5A5] md:text-xl text-base border-2 border-[#6EEB83] rounded-full bg-transparent "
               name="search"
               placeholder="Search By HashTags like '#html'"
               {...register("text", { required: false })}
@@ -107,10 +107,10 @@ export default function Search() {
         </div>
 
         {/* horizontal line */}
-        <p className="w-[97%]  mx-auto md:mx-0 border-2 border-[#A5A5A5]  rounded-full"></p>
+        <p className="w-[97%]   mx-auto md:mx-0 border-2 border-[#A5A5A5]  rounded-full"></p>
 
         {/* lower section */}
-        <div className="md:w-[90%]  w-full flex flex-col items-start md:mt-4 md:gap-16 gap-14 mb-10">
+        <div className="md:w-[90%] overflow-y-auto no-scrollbar  w-full flex flex-col items-start md:mt-4 md:gap-16 gap-14 mb-20">
           {/* card 1 */}
           {resultPosts &&
             resultPosts.map((post) => (
@@ -119,7 +119,7 @@ export default function Search() {
                 key={post.$id}
               >
                 {/* title and meta data */}
-                <div className="w-full flex flex-col items-start justify-start ">
+                <div className="w-full flex flex-col md:items-start md:justify-start justify-center items-center">
                   <h1
                     className="md:text-4xl text-center md:text-start text-lg text-[#6EEB83] not-italic font-400"
                     style={{ fontFamily: "DM Serif Display, sans-serif" }}
