@@ -10,9 +10,10 @@ export default function RTE({ name, control, label, defaultValue = "",className=
       <Controller
         name={name || "content"}
         control={control}
-        
+        rules={{required:'but this is required'}}
         render={({ field: { onChange } }) => (
           <Editor
+           
             initialValue={defaultValue}
             init={{
               initialValue: defaultValue,

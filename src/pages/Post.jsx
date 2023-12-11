@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import {FaEdit,MdOutlineDeleteForever} from '../icons'
 import { updateStatus, clearStatus } from "../store/statusSlice";
 
+
 export default function Post() {
   const [post, setPost] = useState(null);
   const posts = useSelector((state) => state.post.posts);
@@ -52,15 +53,17 @@ export default function Post() {
     });
   };
 
+  
+
   const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
   return post ? (
     <Container>
-      <div className="h-screen gap-20 md:gap-0 w-full flex flex-col md:flex-row md:justify-between justify-start">
+      <div className="overflow-y-auto no-scrollbar py-1 gap-20 md:gap-0 w-full flex flex-col md:flex-row md:justify-between justify-start">
 
         {/* left section */}
-        <div className="md:w-3/4 w-full">
+        <div className="md:w-3/4 w-full  ">
           {/* meta data and title */}
-          <div className="flex flex-col justify-center md:items-start items-center gap-2 mb-10 ">
+          <div className="flex flex-col justify-center md:items-start items-center gap-2 mb-5 ">
             <h1
               className="text-[#6EEB83] text-4xl text-center md:text-start"
               style={{ fontFamily: "DM Serif Display, sans-serif" }}
@@ -79,9 +82,16 @@ export default function Post() {
             </div>
           </div>
 
+          
           {/* blog content */}
           <div className="w-full h-auto pb-6 md:text-start text-center browser-css" style={{ fontFamily: "Lexend Deca, sans-serif" }}>
           {parse(post.content)}
+          </div>
+
+
+          {/* hash tags */}
+          <div className="w-full h-12  flex flex-wrap gap-4 justify-center items-center md:justify-start">
+            {post.hashTags.split(' ').map((tag)=>(<button key={tag} className="border  border-[#6EEB83] text-[#6EEB83] rounded-3xl px-4 py-1 text-center">{tag}</button>))}
           </div>
         </div>
 

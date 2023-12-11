@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import appwriteService from "../appwrite/config";
-import authService from '../appwrite/auth'
+import authService from "../appwrite/auth";
 import { updatePosts } from "../store/postSlice";
 import { useCallback } from "react";
 import { useEffect } from "react";
@@ -15,13 +15,14 @@ export default function PostForm({ post }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { register, handleSubmit, watch, setValue, control, getValues } =
+  const { register, handleSubmit, watch, setValue, control, getValues, formState: { errors } } =
     useForm({
       defaultValues: {
         title: post?.title || "",
         slug: post?.$id || "",
         content: post?.content || "",
         status: post?.status || "active",
+        hashTags:post?.hashTags || ''
       },
     });
 
@@ -44,6 +45,7 @@ export default function PostForm({ post }) {
                 title: data.title,
                 content: data.content,
                 status: data.status,
+                hashTags: data.hashTags
               },
             })
           );
@@ -58,19 +60,9 @@ export default function PostForm({ post }) {
         dispatch(updateStatus({ text: error.message, error: true }));
         setTimeout(() => {
           dispatch(clearStatus());
-        }, 3000)
+        }, 3000);
       }
-
-
     } else {
-      // const file = await appwriteService.uploadFile(data.image[0]);
-
-      // if(file){
-      //     const fileId = file.$id
-      //     data.featuredImage = fileId;
-      // }
-      // console.log('{...userData}.prefs.userName',{...userData}.prefs.userName);
-
       try {
         const dbPost = await appwriteService.createPost({
           ...data,
@@ -89,12 +81,12 @@ export default function PostForm({ post }) {
         dispatch(updateStatus({ text: error.message, error: true }));
         setTimeout(() => {
           dispatch(clearStatus());
-        }, 3000)
+        }, 3000);
       }
-
     }
   };
 
+  // generate slug
   const slugTransform = useCallback((value) => {
     if (value && typeof value === "string")
       return value
@@ -106,18 +98,30 @@ export default function PostForm({ post }) {
     return "";
   }, []);
 
+  // generate hashTags
+  const hashTagsTransform = useCallback((value) => {
+    if (value && typeof value === "string")
+      return '#'+value
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-zA-Z\d\s]+/g, "")
+        .replace(/\s+/g, ' #');
+    return "";
+  });
+
   useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name === "title") {
         setValue("slug", slugTransform(value.title), { shouldValidate: true });
+      } else if (name === "tags") {
+        setValue("hashTags", hashTagsTransform(value.tags), {
+          shouldValidate: true,
+        });
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [watch, slugTransform, setValue]);
-
-
-
+  }, [watch, slugTransform, setValue, hashTagsTransform]);
 
   return (
     <form
@@ -137,7 +141,7 @@ export default function PostForm({ post }) {
 
         {/* slug */}
         <Input
-          className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
+          className="w-full border-[#6EEB83] hidden border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
           type="text"
           readOnly
           id="slug"
@@ -158,6 +162,7 @@ export default function PostForm({ post }) {
           id="content"
           defaultValue={getValues("content")}
         />
+        
       </div>
 
       {/* right section */}
@@ -186,6 +191,32 @@ export default function PostForm({ post }) {
           options={["active", "inactive"]}
           className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
           {...register("status", { required: true })}
+        />
+
+        {/* hasTags input */}
+        <Input
+          className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
+          type="text"
+          placeholder="Enter Tags with Space"
+          {...register("tags")}
+        />
+
+        {/* Generate hasTags input */}
+        <Input
+          readOnly
+          className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
+          type="text"
+          placeholder="Generated HashTags"
+          {...register("hashTags")}
+          onInput={(e) => {
+            setValue(
+              "hashTags",
+              hashTagsTransform(e.currentTarget.value),
+              {
+                shouldValidate: true,
+              }
+            );
+          }}
         />
 
         {/* submit */}

@@ -22,6 +22,7 @@ export class Service {
         status,
         userId,
         userName,
+        hashTags
     }) {
         try {
             return await this.databases.createDocument(
@@ -34,6 +35,7 @@ export class Service {
                     status,
                     userId,
                     userName,
+                    hashTags
                 }
             );
         } catch (error) {
@@ -41,7 +43,7 @@ export class Service {
         }
     }
 
-    async updatePost(slug, { title, content, status }) {
+    async updatePost(slug, { title, content, status,hashTags }) {
         try {
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
@@ -51,6 +53,7 @@ export class Service {
                     title,
                     content,
                     status,
+                    hashTags
                 }
             );
         } catch (error) {
