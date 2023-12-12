@@ -1,4 +1,3 @@
-// import "../index.css";
 import { Link, useNavigate } from "react-router-dom";
 import { LuBellRing } from "../icons/index";
 import { useCallback, useEffect, useState } from "react";
@@ -8,7 +7,7 @@ import { Input, Button } from "./index";
 import authService from "../appwrite/auth";
 import { updateStatus, clearStatus } from "../store/statusSlice";
 import { login } from "../store/authSlice";
-// import { Link } from "react-router-dom";
+
 export default function SignUp() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,7 +19,6 @@ export default function SignUp() {
   const text = useSelector((state) => state.status.text);
 
   const create = async (data) => {
-    // setError("");
     try {
       const userData = await authService.createAccount(data);
       if (userData) {
@@ -58,9 +56,9 @@ export default function SignUp() {
         .getHours()
         .toString()
         .padStart(2, "0")}${now.getMinutes().toString().padStart(2, "0")}${now
-        .getSeconds()
-        .toString()
-        .padStart(2, "0")}`;
+          .getSeconds()
+          .toString()
+          .padStart(2, "0")}`;
 
       // Ensure the total length is 12 characters
       const truncatedUsername = extractedUsername
@@ -130,9 +128,8 @@ export default function SignUp() {
           {status && (
             <div className=" relative -top-10 right-0 ">
               <div
-                className={`${
-                  error ? "bg-[#FF5E5B]" : "bg-[#6EEB83]"
-                }  flex items-center gap-[5rem] justify-between px-4 py-2`}
+                className={`${error ? "bg-[#FF5E5B]" : "bg-[#6EEB83]"
+                  }  flex items-center gap-[5rem] justify-between px-4 py-2`}
               >
                 {/* text */}
                 <div className="flex flex-col justify-center items-start w-[90%]">
@@ -140,7 +137,7 @@ export default function SignUp() {
                     className=""
                     style={{ fontFamily: "Lexend Deca, sans-serif" }}
                   >
-                     {error ? 'FAILED' : 'SUCCESS'}
+                    {error ? "FAILED" : "SUCCESS"}
                   </h3>
                   <h3
                     className="w-full"
@@ -155,7 +152,6 @@ export default function SignUp() {
           )}
         </div>
 
-        
         {/* form section*/}
         <div className=" w-full text-white h-full ">
           <form
@@ -175,7 +171,7 @@ export default function SignUp() {
             {/* userName */}
             <Input
               readOnly
-              placeholder='User Name (Auto Generated)'
+              placeholder="User Name (Auto Generated)"
               className="border-[#6EEB83] hidden text-lg bg-transparent px-6 h-14 border-2 outline-none w-full "
               style={{ fontFamily: "Lexend Deca, sans-serif" }}
               {...register("userName", { required: true })}
@@ -190,7 +186,6 @@ export default function SignUp() {
             <Input
               className="border-[#6EEB83] text-lg bg-transparent px-6 h-14 border-2 outline-none w-full"
               type="email"
-              
               placeholder="Enter Your Email"
               style={{ fontFamily: "Lexend Deca, sans-serif" }}
               {...register("email", {
@@ -214,16 +209,6 @@ export default function SignUp() {
               })}
             />
 
-            {/* retype password */}
-            {/* <input
-              className="border-[#6EEB83] text-lg bg-transparent px-6 h-14 border-2 outline-none w-full"
-              type="password"
-              name="re-password"
-              id="retype-password"
-              placeholder="Re-enter Your Password"
-              style={{ fontFamily: "Lexend Deca, sans-serif" }}
-            /> */}
-
             {/* submit button */}
             <div className="flex items-center justify-between gap-10 md:gap-0">
               <Button
@@ -239,7 +224,6 @@ export default function SignUp() {
                 style={{ fontFamily: "Lexend Deca, sans-serif" }}
               >
                 <h3 className="w-full ">already have an account?</h3>
-                {/* <Link to='/' className="text-[#6EEB83]">log-in</Link> */}
                 <Link to="/login">
                   <h3 className="text-[#6EEB83] cursor-pointer w-full">
                     log-in

@@ -1,20 +1,26 @@
+// Navigation bar
+
+// imports
 import { Link, useNavigate, NavLink } from "react-router-dom";
+// import icons
 import {
-  IoIosSearch,
-  IoMdTrendingUp,
-  FaRegUser,
   IoIosAddCircleOutline,
   LuHome,
   LuSearch,
   LuUser,
 } from "../../icons";
 import { useSelector } from "react-redux";
+// import logout button component
 import { LogoutBtn } from "../";
+
+// export nav component
 export default function Nav() {
+  // get authentication status from store(authSlice)
   const authStatus = useSelector((state) => state.auth.status);
   const navigate = useNavigate();
 
   return (
+    // nav container
     <div className="md:w-[6%]  z-10  flex fixed  backdrop-blur-2xl md:backdrop-blur-0 bottom-1   w-[90%] md:h-screen h-[20px] md:border-r-2 border-2 md:border-0 border-[#6EEB83] text-white  md:flex-col flex-row items-center justify-between py-10 px-2 gap-2">
       {/* logo */}
       <div className="w-full md:inline-block hidden ">
@@ -28,12 +34,11 @@ export default function Nav() {
 
       {/* profile icon and nav content*/}
       <ul className="w-full flex md:pr-0 pr-5  md:flex-col flex-row md:justify-center justify-evenly items-center md:gap-6 gap-4 ">
-        {/* profile */}
+        {/* home section */}
         <NavLink
           to="/"
           className={({ isActive }) =>
-            `transition-transform duration-200 text-[#6EEB83] ${
-              isActive ? " text-white scale-[1.1]" : "text-[#6EEB83]"
+            `transition-transform duration-200 text-[#6EEB83] ${isActive ? " text-white scale-[1.1]" : "text-[#6EEB83]"
             }`
           }
         >
@@ -48,12 +53,11 @@ export default function Nav() {
           </li>
         </NavLink>
 
-        {/* profile */}
+        {/* profile section */}
         <NavLink
           to="/profile"
           className={({ isActive }) =>
-            `transition-transform duration-200 text-[#6EEB83] ${
-              isActive ? " text-white scale-[1.1]" : "text-[#6EEB83]"
+            `transition-transform duration-200 text-[#6EEB83] ${isActive ? " text-white scale-[1.1]" : "text-[#6EEB83]"
             }`
           }
         >
@@ -68,11 +72,10 @@ export default function Nav() {
           </li>
         </NavLink>
 
-        {/* search */}
+        {/* search section*/}
         <NavLink
           className={({ isActive }) =>
-            `transition-transform duration-200 text-[#6EEB83] ${
-              isActive ? " text-white scale-[1.1]" : "text-[#6EEB83]"
+            `transition-transform duration-200 text-[#6EEB83] ${isActive ? " text-white scale-[1.1]" : "text-[#6EEB83]"
             }`
           }
           to="/search"
@@ -88,12 +91,11 @@ export default function Nav() {
           </li>
         </NavLink>
 
-        {/* create post */}
+        {/* create post section */}
         <NavLink
           to="/add-post"
           className={({ isActive }) =>
-            `transition-transform duration-200  ${
-              isActive ? " text-white scale-[1.1]" : "text-[#6EEB83]"
+            `transition-transform duration-200  ${isActive ? " text-white scale-[1.1]" : "text-[#6EEB83]"
             }`
           }
         >
@@ -108,13 +110,9 @@ export default function Nav() {
           </li>
         </NavLink>
 
-        {/* <li className="w-full flex flex-col justify-center items-center ">
-          <IoMdTrendingUp className="text-[#6EEB83] text-4xl font-bold" />
-          <h3 style={{ fontFamily: "Lexend Deca, sans-serif" }}>trending</h3>
-        </li> */}
       </ul>
 
-      {/* create  */}
+      {/* logout section */}
       <ul className="md:w-full w-[30%] md:pr-0 pr-5">
         <li className="w-full flex flex-col justify-center items-center">
           <LogoutBtn />

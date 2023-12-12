@@ -1,22 +1,30 @@
-import {createSlice} from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
-const initialState ={
-    post:null,
-    posts:[]
+// create initial state
+const initialState = {
+    post: null,
+    posts: []
 }
 
+// create Slice
 const postSlice = createSlice({
-    name:'post',
+    // slice name
+    name: 'post',
+    // initial state
     initialState,
-    reducers:{
-        setPosts:(state, action)=>{
+    // create reducers
+    reducers: {
+        // create setPost reducer
+        setPosts: (state, action) => {
             state.posts = action.payload
         },
-        updatePosts:(state,action)=>{
-            state.posts = state.posts.map(post=>{
-                if(post.$id ===  action.payload.slug){
-                    return {...action.payload.data}
-                }else{
+        // create updatePosts reducer
+        updatePosts: (state, action) => {
+            // update post when post id matches
+            state.posts = state.posts.map(post => {
+                if (post.$id === action.payload.slug) {
+                    return { ...action.payload.data }
+                } else {
                     return post
                 }
             })
@@ -24,6 +32,8 @@ const postSlice = createSlice({
     }
 })
 
-export const {setPosts, updatePosts} = postSlice.actions
+// export reducer functions 
+export const { setPosts, updatePosts } = postSlice.actions
 
+// export reducer functions for store
 export default postSlice.reducer;

@@ -22,7 +22,7 @@ export default function PostForm({ post }) {
         slug: post?.$id || "",
         content: post?.content || "",
         status: post?.status || "active",
-        hashTags:post?.hashTags || ''
+        hashTags: post?.hashTags || ''
       },
     });
 
@@ -101,7 +101,7 @@ export default function PostForm({ post }) {
   // generate hashTags
   const hashTagsTransform = useCallback((value) => {
     if (value && typeof value === "string")
-      return '#'+value
+      return '#' + value
         .trim()
         .toLowerCase()
         .replace(/[^a-zA-Z\d\s]+/g, "")
@@ -162,30 +162,11 @@ export default function PostForm({ post }) {
           id="content"
           defaultValue={getValues("content")}
         />
-        
+
       </div>
 
       {/* right section */}
       <div className="md:w-[30%] w-full flex flex-col gap-4 ">
-        {/* file input */}
-        {/* <Input
-          className="w-full border-[#6EEB83] border-2 py-4 px-6 bg-transparent text-[#A5A5A5] outline-none"
-          type="file"
-          id="file"
-          accept="image/png, image/jpg, image/jpeg, image/gif"
-          {...register("image", { required: !post })}
-        /> */}
-
-        {/* {post && (
-          <div className="w-full mb-4">
-            <img
-              src={appwriteService.getFilePreview(post.featuredImage)}
-              alt={post.title}
-              className="rounded-lg"
-            />
-          </div>
-        )} */}
-
         {/* status input */}
         <Select
           options={["active", "inactive"]}

@@ -29,7 +29,6 @@ export default function profile() {
     if (userData) {
       setValue("name", userData.name || "");
       setValue("email", userData.email || "");
-      // setuserName({...userData}.prefs.userName)
       setValue("userName", { ...userData }.prefs.userName || "");
 
       if (userData.prefs.avatar) {
@@ -66,8 +65,6 @@ export default function profile() {
               dispatch(clearStatus());
             }, 2000);
           }
-
-          // navigate("/profile");
         }
       } catch (error) {
         dispatch(updateStatus({ text: error.message, error: true }));
@@ -195,7 +192,6 @@ export default function profile() {
                 name="username"
                 id="username"
                 {...register("userName", { required: true })}
-              // value={userName}
               />
             </div>
 

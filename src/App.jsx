@@ -26,12 +26,6 @@ function App() {
       .then((userData) => {
         if (userData) {
           dispatch(login({ userData }));
-
-          // dispatch(updateStatus({ text: "Login Successful", error: false }));
-          // setTimeout(() => {
-          //   dispatch(clearStatus());
-          // }, 1000);
-
         } else {
           dispatch(logout());
         }
@@ -46,11 +40,7 @@ function App() {
   }, []);
 
   return !loading ? (
-    //  <h1 className='text-red-500 text-5xl text-center'>👷🏿‍♂️Project under Construction 🚧</h1>
-
     <>
-
-
       {/* wrapper */}
       <div className="w-full md:h-screen  relative flex md:flex-row flex-col-reverse justify-between items-center   bg-[#272727]">
         {/*nav bar  */}

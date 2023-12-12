@@ -1,3 +1,4 @@
+// imports
 import { Link, useNavigate } from "react-router-dom";
 import { LuBellRing } from "../icons/index";
 import { useDispatch } from "react-redux";
@@ -10,17 +11,18 @@ import appwriteService from "../appwrite/config";
 import { Button, Input } from "./index";
 import { useSelector } from "react-redux";
 
+// export Login component
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
-  // const [error, setError] = useState("");
 
   // error
   const errorStatus = useSelector((state) => state.status.status);
   const error = useSelector((state) => state.status.error);
   const text = useSelector((state) => state.status.text);
 
+  // handle form submit
   const login = async (data) => {
     try {
       const session = await authService.login(data);
@@ -31,12 +33,10 @@ export default function Login() {
           if (posts) {
             dispatch(authLogin({ userData }));
 
-
             dispatch(updateStatus({ text: "Logged In", error: false }));
             setTimeout(() => {
               dispatch(clearStatus());
             }, 1000);
-
 
             navigate("/");
           }
@@ -91,9 +91,8 @@ export default function Login() {
           {errorStatus && (
             <div className=" relative -top-10 right-0 ">
               <div
-                className={`${
-                  error ? "bg-[#FF5E5B]" : "bg-[#6EEB83]"
-                }  flex items-center gap-[5rem] justify-between px-4 py-2`}
+                className={`${error ? "bg-[#FF5E5B]" : "bg-[#6EEB83]"
+                  }  flex items-center gap-[5rem] justify-between px-4 py-2`}
               >
                 {/* text */}
                 <div className="flex flex-col justify-center items-start w-[90%]">
@@ -101,7 +100,7 @@ export default function Login() {
                     className=""
                     style={{ fontFamily: "Lexend Deca, sans-serif" }}
                   >
-                    {error ? 'FAILED' : 'SUCCESS'}
+                    {error ? "FAILED" : "SUCCESS"}
                   </h3>
                   <h3
                     className="w-full"
@@ -164,7 +163,6 @@ export default function Login() {
                 style={{ fontFamily: "Lexend Deca, sans-serif" }}
               >
                 <h3 className="w-full ">don't have any account?</h3>
-                {/* <Link to='/' className="text-[#6EEB83]">log-in</Link> */}
                 <Link to="/signup">
                   <h3 className="text-[#6EEB83] cursor-pointer w-full">
                     sign-up

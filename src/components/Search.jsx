@@ -52,7 +52,6 @@ export default function Search() {
               if (value === hashTagsArray[j]) {
                 result.add(posts[i]);
                 setResultPosts([...result]);
-                // console.log("test", posts[i]);
               }
             }
           }
@@ -99,9 +98,6 @@ export default function Search() {
               name="search"
               placeholder="Search By HashTags like '#html'"
               {...register("text", { required: false })}
-            // onInput={(e)=>{
-            //   setResultPosts(prevResultPosts =>[''])
-            // }}
             />
           </form>
         </div>

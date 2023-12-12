@@ -1,3 +1,4 @@
+// import environment variables
 const conf = {
     appwriteUrl: String(import.meta.env.VITE_APPWRITE_URL),
     appwriteProjectId: String(import.meta.env.VITE_APPWRITE_PROJECT_ID),
@@ -6,4 +7,5 @@ const conf = {
     appwriteBucketId: String(import.meta.env.VITE_APPWRITE_BUCKET_ID)
 }
 
+// export environment variables
 export default conf;
