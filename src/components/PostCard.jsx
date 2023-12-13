@@ -44,8 +44,10 @@ export default function PostCard({
         </div>
 
         {/* username container */}
-        <h1 className=" md:h-28 md:w-24 flex md:-rotate-90 items-end justify-center">
+        <h1 className=" md:h-28 md:w-24 flex md:-rotate-90 text-slate-300 hover:text-slate-500 items-end justify-center">
+          <Link to={`/user-posts/${userName}`}>
           {userName}
+          </Link>
         </h1>
       </div>
 

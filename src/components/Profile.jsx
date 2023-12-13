@@ -120,6 +120,10 @@ export default function profile() {
     }
   };
 
+  const userPosts = async(data)=>{
+    navigate(`/user-posts/${data.userName}`)
+  }
+
   return (
     <div className="w-[90%] md:pl-2  text-white flex flex-col md:justify-start  md:items-start items-center  h-full md:py-1 py-4 pb-20 md:pb-0 md:gap-2 gap-4">
       {/* profile wrapper */}
@@ -166,11 +170,12 @@ export default function profile() {
             </div>
 
             {/* email */}
-            <div className="flex flex-col">
+            <div className="flex flex-col ">
               <label className="text-center md:text-start" htmlFor="email">
                 Email
               </label>
               <Input
+              readOnly
                 className="outline-none bg-transparent text-center md:text-start border-2 border-[#6EEB83]  py-4 px-6 text-[#A5A5A5]"
                 type="text"
                 name="email"
@@ -203,8 +208,10 @@ export default function profile() {
               Update Profile
             </Button>
 
-            <Button className="bg-[#FF5E5B] hidden text-black font-bold py-4 px-6">
-              Delete Account
+            <Button
+            onClick={handleSubmit(userPosts)}
+             className="bg-[#6EEB83]  text-black font-bold py-4 px-6">
+              Your Posts
             </Button>
           </div>
 

@@ -40,27 +40,36 @@ export default function Search() {
   const submit = (data) => {
     let result = new Set();
     if ({ ...data }.text) {
-      const arr = { ...data }.text.split(" ");
 
-      arr.forEach((value) => {
-        if (value.charAt(0) === "#") {
-          for (let i = 0; i < posts.length; i++) {
-            const hashTagsArray = posts[i].hashTags.split(" ");
+      // search by user name
+      if ({ ...data }.text.charAt(0) === "@") {
+        const userPosts = posts.filter((post) => post.userName === { ...data }.text);
+        result.add(userPosts);
+        setResultPosts(userPosts);
+      } 
+      // search by hash Tags
+      else if ({ ...data }.text.charAt(0) === "#") {
+        const arr = { ...data }.text.split(" ");
+        arr.forEach((value) => {
+          if (value.charAt(0) === "#") {
+            for (let i = 0; i < posts.length; i++) {
+              const hashTagsArray = posts[i].hashTags.split(" ");
 
-            // loop on hashTagsArray
-            for (let j = 0; j < hashTagsArray.length; j++) {
-              if (value === hashTagsArray[j]) {
-                result.add(posts[i]);
-                setResultPosts([...result]);
+              // loop on hashTagsArray
+              for (let j = 0; j < hashTagsArray.length; j++) {
+                if (value === hashTagsArray[j]) {
+                  result.add(posts[i]);
+                  setResultPosts([...result]);
+                }
               }
             }
+            if (result.size === 0) {
+              result.clear();
+              setResultPosts((prev) => []);
+            }
           }
-          if (result.size === 0) {
-            result.clear();
-            setResultPosts((prev) => []);
-          }
-        }
-      });
+        });
+      }
     } else if ({ ...data }.text === "") {
       setResultPosts((prev) => []);
     }
@@ -85,6 +94,7 @@ export default function Search() {
     <Container className="md:pl-8 ">
       {/* wrapper */}
       <div className="w-[100%] h-screen flex flex-col justify-start items-center">
+        {/* search wrapper */}
         <div className="w-full    relative flex justify-center items-center mb-5">
           <form onSubmit={handleSubmit(submit)} className="w-full ">
             <button
@@ -94,9 +104,9 @@ export default function Search() {
               <BiSearchAlt />
             </button>
             <Input
-              className="px-9  py-2 w-full outline-none text-[#A5A5A5] md:text-xl text-base border-2 border-[#6EEB83] rounded-full bg-transparent "
+              className="px-9  py-2 w-full outline-none text-[#A5A5A5] md:text-xl text-xs border-2 border-[#6EEB83] rounded-full bg-transparent "
               name="search"
-              placeholder="Search By HashTags like '#html'"
+              placeholder="Search  like '#hash #tags' or '@userName'"
               {...register("text", { required: false })}
             />
           </form>
@@ -129,7 +139,10 @@ export default function Search() {
                     style={{ fontFamily: "Lexend Deca, sans-serif" }}
                   >
                     <h3 className="text-[#A5A5A5] text-center md:text-start text-xs md:text-base">
-                      written by {post.userName} on{" "}
+                      written by <Link 
+                to={`/user-posts/${post.userName}`}
+                className="text-slate-300 hover:text-[#A5A5A5]"
+                >{post.userName}</Link> on{" "}
                       {new Date(post.$createdAt).getDate() < 10
                         ? "0" + new Date(post.$createdAt).getDate()
                         : new Date(post.$createdAt).getDate()}{" "}
@@ -150,7 +163,6 @@ export default function Search() {
                         {tag}
                       </button>
                     ))}
-                
                 </div>
               </div>
             ))}

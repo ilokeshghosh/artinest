@@ -6,9 +6,8 @@ import appwriteService from "../appwrite/config";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useEffect } from "react";
-import {FaEdit,MdOutlineDeleteForever} from '../icons'
+import { FaEdit, MdOutlineDeleteForever } from "../icons";
 import { updateStatus, clearStatus } from "../store/statusSlice";
-
 
 export default function Post() {
   const [post, setPost] = useState(null);
@@ -33,7 +32,7 @@ export default function Post() {
       const currentPost = posts.find((post) => post.$id === slug);
       setPost(currentPost);
     } else {
-      dispatch(updateStatus({ text: 'Post Not Found', error: true }));
+      dispatch(updateStatus({ text: "Post Not Found", error: true }));
       setTimeout(() => {
         dispatch(clearStatus());
       }, 3000);
@@ -44,22 +43,32 @@ export default function Post() {
   const deletePost = () => {
     appwriteService.deletePost(post.$id).then((status) => {
       if (status) {
-        dispatch(updateStatus({ text: 'Post Deleted', error: false }));
-            setTimeout(() => {
-              dispatch(clearStatus());
-            }, 3000);
+        dispatch(updateStatus({ text: "Post Deleted", error: false }));
+        setTimeout(() => {
+          dispatch(clearStatus());
+        }, 3000);
         navigate("/");
       }
     });
   };
 
-  
-
-  const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+  const months = [
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC",
+  ];
   return post ? (
     <Container>
       <div className="overflow-y-auto no-scrollbar py-1 gap-20 md:gap-0 w-full flex flex-col md:flex-row md:justify-between justify-start">
-
         {/* left section */}
         <div className="md:w-3/4 w-full  ">
           {/* meta data and title */}
@@ -73,25 +82,44 @@ export default function Post() {
 
             {/* metadata */}
             <div style={{ fontFamily: "Lexend Deca, sans-serif" }}>
-              <h3 className="text-[#A5A5A5] text-center md:text-start">
-                written by {post.userName}
+              <h3 className="text-[#A5A5A5] text-center md:text-start ">
+                written by{" "}
+                <Link
+                  to={`/user-posts/${post.userName}`}
+                  className="text-slate-300 hover:text-[#A5A5A5]"
+                >
+                  {post.userName}
+                </Link>
               </h3>
               <h3 className="text-[#A5A5A5] text-center md:text-start">
-                on {new Date({...post}.$createdAt).getDate()<10 ? ('0'+new Date({...post}.$createdAt).getDate()):new Date({...post}.$createdAt).getDate()} {months[new Date({...post}.$createdAt).getMonth()]} {new Date({...post}.$createdAt).getFullYear()}
+                on{" "}
+                {new Date({ ...post }.$createdAt).getDate() < 10
+                  ? "0" + new Date({ ...post }.$createdAt).getDate()
+                  : new Date({ ...post }.$createdAt).getDate()}{" "}
+                {months[new Date({ ...post }.$createdAt).getMonth()]}{" "}
+                {new Date({ ...post }.$createdAt).getFullYear()}
               </h3>
             </div>
           </div>
 
-          
           {/* blog content */}
-          <div className="w-full h-auto pb-6 md:text-start text-center browser-css" style={{ fontFamily: "Lexend Deca, sans-serif" }}>
-          {parse(post.content)}
+          <div
+            className="w-full h-auto pb-6 md:text-start text-center browser-css"
+            style={{ fontFamily: "Lexend Deca, sans-serif" }}
+          >
+            {parse(post.content)}
           </div>
-
 
           {/* hash tags */}
           <div className="w-full h-12  flex flex-wrap gap-4 justify-center items-center md:justify-start">
-            {post.hashTags.split(' ').map((tag)=>(<button key={tag} className="border  border-[#6EEB83] text-[#6EEB83] rounded-3xl px-4 py-1 text-center">{tag}</button>))}
+            {post.hashTags.split(" ").map((tag) => (
+              <button
+                key={tag}
+                className="border  border-[#6EEB83] text-[#6EEB83] rounded-3xl px-4 py-1 text-center"
+              >
+                {tag}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -100,15 +128,19 @@ export default function Post() {
           {isAuthor && (
             <div className="flex md:gap-4 gap-10 items-center md:justify-end justify-center">
               <Link to={`/edit-post/${post.$id}`}>
-                <Button className="text-[#6EEB83] text-3xl  py-0 px-0"><FaEdit /></Button>
+                <Button className="text-[#6EEB83] text-3xl  py-0 px-0">
+                  <FaEdit />
+                </Button>
               </Link>
-              <Button className="text-[#FF5E5B] text-4xl  py-0 px-0" onClick={deletePost}><MdOutlineDeleteForever /></Button>
+              <Button
+                className="text-[#FF5E5B] text-4xl  py-0 px-0"
+                onClick={deletePost}
+              >
+                <MdOutlineDeleteForever />
+              </Button>
             </div>
           )}
         </div>
-
-
-
       </div>
     </Container>
   ) : null;

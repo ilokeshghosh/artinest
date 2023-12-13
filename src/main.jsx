@@ -16,6 +16,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import Construction from "./pages/Construction.jsx";
 import Error from "./pages/Error.jsx";
+import UserPosts from "./pages/UserPosts.jsx";
 
 const router = createBrowserRouter([
   {
@@ -66,10 +67,14 @@ const router = createBrowserRouter([
             <Search />
           </AuthLayout>
         ),
-        // children: [{
-        //   path: '/search/:searchText',
-        //   element: <Search />
-        // }]
+       
+      },{
+        path:'/user-posts/:userName',
+        // element:<UserPosts/>
+        element:( <AuthLayout authentication>
+          {" "}
+          <UserPosts/>
+        </AuthLayout>)
       },
       {
         path: "/post/:slug",
