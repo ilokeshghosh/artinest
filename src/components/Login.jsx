@@ -10,12 +10,14 @@ import authService from "../appwrite/auth";
 import appwriteService from "../appwrite/config";
 import { Button, Input } from "./index";
 import { useSelector } from "react-redux";
+import ReCAPTCHA from "react-google-recaptcha";
 
 // export Login component
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
+  const [verified, setVerified] = useState(false);
 
   // error
   const errorStatus = useSelector((state) => state.status.status);
@@ -49,6 +51,10 @@ export default function Login() {
       }, 3000);
     }
   };
+
+  function onChange() {
+    setVerified(true);
+  }
   return (
     // wrapper
     <div className="w-full h-screen flex ">
@@ -91,8 +97,9 @@ export default function Login() {
           {errorStatus && (
             <div className=" relative -top-10 right-0 ">
               <div
-                className={`${error ? "bg-[#FF5E5B]" : "bg-[#6EEB83]"
-                  }  flex items-center gap-[5rem] justify-between px-4 py-2`}
+                className={`${
+                  error ? "bg-[#FF5E5B]" : "bg-[#6EEB83]"
+                }  flex items-center gap-[5rem] justify-between px-4 py-2`}
               >
                 {/* text */}
                 <div className="flex flex-col justify-center items-start w-[90%]">
@@ -148,12 +155,18 @@ export default function Login() {
               })}
             />
 
+            <ReCAPTCHA
+              sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+              onChange={onChange}
+            />
+
             {/* submit button */}
             <div className="flex items-center justify-between gap-10 md:gap-0">
               <Button
-                className="bg-[#6EEB83] cursor-pointer md:text-xl text-lg font-bold text-center md:px-10 px-5 py-2 md:py-4 text-black"
+                className="bg-[#6EEB83] cursor-pointer md:text-xl text-lg font-bold text-center md:px-10 px-5 py-2 md:py-4 text-black disabled:opacity-50"
                 type="submit"
                 style={{ fontFamily: "Lexend Deca, sans-serif" }}
+                disabled={!verified}
               >
                 Sign in
               </Button>

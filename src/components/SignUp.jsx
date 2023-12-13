@@ -7,11 +7,13 @@ import { Input, Button } from "./index";
 import authService from "../appwrite/auth";
 import { updateStatus, clearStatus } from "../store/statusSlice";
 import { login } from "../store/authSlice";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function SignUp() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit, watch, setValue } = useForm();
+  const [verified, setVerified] = useState(false);
 
   // error
   const status = useSelector((state) => state.status.status);
@@ -20,21 +22,30 @@ export default function SignUp() {
 
   const create = async (data) => {
     try {
-      const userData = await authService.createAccount(data);
-      if (userData) {
-        const userData = await authService.getCurrentUser();
+      if (data.password === data.retype_password) {
+        const userData = await authService.createAccount(data);
         if (userData) {
-          const prefValue = { ...data }.userName;
-          const pref = await authService.setPrefs("userName", prefValue);
-          if (pref) {
-            dispatch(login({ userData }));
-            dispatch(updateStatus({ text: "Account Created", error: false }));
-            setTimeout(() => {
-              dispatch(clearStatus());
-            }, 2000);
-            navigate("/");
+          const userData = await authService.getCurrentUser();
+          if (userData) {
+            const prefValue = { ...data }.userName;
+            const pref = await authService.setPrefs("userName", prefValue);
+            if (pref) {
+              dispatch(login({ userData }));
+              dispatch(updateStatus({ text: "Account Created", error: false }));
+              setTimeout(() => {
+                dispatch(clearStatus());
+              }, 2000);
+              navigate("/");
+            }
           }
         }
+      } else {
+        dispatch(
+          updateStatus({ text: "Password Mismatched Try Again", error: true })
+        );
+        setTimeout(() => {
+          dispatch(clearStatus());
+        }, 4000);
       }
     } catch (error) {
       dispatch(updateStatus({ text: error.message, error: true }));
@@ -56,9 +67,9 @@ export default function SignUp() {
         .getHours()
         .toString()
         .padStart(2, "0")}${now.getMinutes().toString().padStart(2, "0")}${now
-          .getSeconds()
-          .toString()
-          .padStart(2, "0")}`;
+        .getSeconds()
+        .toString()
+        .padStart(2, "0")}`;
 
       // Ensure the total length is 12 characters
       const truncatedUsername = extractedUsername
@@ -86,6 +97,10 @@ export default function SignUp() {
 
     return () => subscription.unsubscribe();
   }, [watch, userNameTransform, setValue]);
+
+  function onChange() {
+    setVerified(true)
+  }
   return (
     // wrapper
     <div className="w-full h-screen flex ">
@@ -103,9 +118,9 @@ export default function SignUp() {
       </div>
 
       {/* right section */}
-      <div className="bg-[#272727] md:w-[70%] w-full flex  flex-col items-center md:items-start justify-center md:justify-start md:px-28 p-4">
+      <div className="bg-[#272727] md:w-[70%] w-full flex  flex-col items-center md:items-start justify-center md:justify-start md:px-28 p-4 overflow-y-auto">
         {/* upper title and notification area */}
-        <div className="flex md:flex-row flex-col-reverse  w-full justify-between items-center md:py-14 py-12">
+        <div className="flex md:flex-row flex-col-reverse  w-full justify-between items-center md:py-9 py-12">
           {/* title & subtitle */}
           <div className="flex flex-col justify-center items-start">
             {/* title */}
@@ -128,8 +143,9 @@ export default function SignUp() {
           {status && (
             <div className=" relative -top-10 right-0 ">
               <div
-                className={`${error ? "bg-[#FF5E5B]" : "bg-[#6EEB83]"
-                  }  flex items-center gap-[5rem] justify-between px-4 py-2`}
+                className={`${
+                  error ? "bg-[#FF5E5B]" : "bg-[#6EEB83]"
+                }  flex items-center gap-[5rem] justify-between px-4 py-2`}
               >
                 {/* text */}
                 <div className="flex flex-col justify-center items-start w-[90%]">
@@ -167,7 +183,6 @@ export default function SignUp() {
                 required: true,
               })}
             />
-
             {/* userName */}
             <Input
               readOnly
@@ -181,7 +196,6 @@ export default function SignUp() {
                 });
               }}
             />
-
             {/* email */}
             <Input
               className="border-[#6EEB83] text-lg bg-transparent px-6 h-14 border-2 outline-none w-full"
@@ -197,7 +211,6 @@ export default function SignUp() {
                 },
               })}
             />
-
             {/* password */}
             <Input
               className="border-[#6EEB83] text-lg bg-transparent px-6 h-14 border-2 outline-none w-full"
@@ -208,13 +221,24 @@ export default function SignUp() {
                 required: true,
               })}
             />
-
+            {/* Retype-password */}
+            <Input
+              className="border-[#6EEB83] text-lg bg-transparent px-6 h-14 border-2 outline-none w-full"
+              type="password"
+              placeholder="Re-Type Password"
+              style={{ fontFamily: "Lexend Deca, sans-serif" }}
+              {...register("retype_password", {
+                required: true,
+              })}
+            />
+            <ReCAPTCHA sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" onChange={onChange} />
             {/* submit button */}
             <div className="flex items-center justify-between gap-10 md:gap-0">
               <Button
-                className="bg-[#6EEB83] cursor-pointer md:text-xl text-lg font-bold text-center md:px-10 px-5 py-2 md:py-4 text-black"
+                className="bg-[#6EEB83] cursor-pointer md:text-xl text-lg font-bold text-center md:px-10 px-5 py-2 md:py-4 text-black disabled:opacity-50"
                 type="submit"
                 style={{ fontFamily: "Lexend Deca, sans-serif" }}
+                disabled={!verified}
               >
                 Create Account
               </Button>
