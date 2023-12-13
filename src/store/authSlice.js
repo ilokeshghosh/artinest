@@ -17,7 +17,8 @@ const authSlice = createSlice({
     // create login reducer
     login: (state, action) => {
       state.status = true;
-      // set userdata to state on login
+      // set userdata to state on login 
+      // ! NOTE : always give object key as userData(when dispatching) like 'dispatch(login({userData:data}))' to avoid bugs or errors , because we are using 'payload.userData'
       state.userData = action.payload.userData;
     },
     // create logout reducer

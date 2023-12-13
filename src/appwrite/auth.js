@@ -129,6 +129,27 @@ export class AuthService {
     }
 
 
+    // function for email verification
+    async sendVerificationMail(){
+        try {
+            await this.account.createVerification('http://localhost:5173/profile/')
+            return true
+        } catch (error) {
+            throw error
+        }
+    }
+
+
+    async confirmVerification(userId,secret){
+        try{
+            await this.account.updateVerification(userId,secret)
+        }catch(error){
+            throw error
+        }
+    }
+
+
+    // avatar services
     //function to generate avatar based on name (not recommended to use , use 'Get user initials' instead)
     getUserAvatar(name) {
         // replace gap with '+

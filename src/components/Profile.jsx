@@ -1,29 +1,32 @@
 import { useEffect, useState } from "react";
 import {
-  IoIosSearch,
-  IoMdTrendingUp,
-  FaRegUser,
-  IoIosAddCircleOutline,
   MdOutlineEdit,
+  LuMailX,
+  LuMailCheck,
 } from "../icons";
 import { useSelector } from "react-redux";
 import authService from "../appwrite/auth";
-import appwriteService from "../appwrite/config";
-import { get, useForm } from "react-hook-form";
+import {useForm } from "react-hook-form";
 import { login } from "../store/authSlice";
 import { Button, Input } from "./index";
 import { useDispatch } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import {
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { updateStatus, clearStatus } from "../store/statusSlice";
+import { login as authLogin } from "../store/authSlice";
+
 export default function profile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.userData);
-  const [userName, setuserName] = useState();
-
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const userId = searchParams.get("userId");
+  const secret = searchParams.get("secret");
   const [selectedImage, setSelectedImage] = useState(null);
-
-  const { register, handleSubmit, setValue, control, getValues } = useForm();
+  const { register, handleSubmit, setValue} = useForm();
 
   useEffect(() => {
     if (userData) {
@@ -32,14 +35,14 @@ export default function profile() {
       setValue("userName", { ...userData }.prefs.userName || "");
 
       if (userData.prefs.avatar) {
-        const imgUrl = authService.getAvatarPreview(userData.prefs.avatar);
+        const imgUrl = authService.getAvatarPreview({...userData}.prefs.avatar);
         setValue("imgUrl", imgUrl);
       } else {
         const imgUrl = authService.getUserAvatar(userData.name);
         setValue("imgUrl", imgUrl);
       }
     }
-  }, [userData, setValue]);
+  }, [userData, setValue, navigate]);
 
   const submit = async (data) => {
     if ({ ...userData }.prefs.avatar === undefined) {
@@ -93,7 +96,6 @@ export default function profile() {
         if (updateName || file) {
           const userData = await authService.getCurrentUser();
           if (userData) {
-            
             dispatch(login({ userData }));
 
             dispatch(updateStatus({ text: "Profile Updated", error: false }));
@@ -108,9 +110,6 @@ export default function profile() {
           dispatch(clearStatus());
         }, 3000);
       }
-
-
-
     }
   };
 
@@ -120,9 +119,82 @@ export default function profile() {
     }
   };
 
-  const userPosts = async(data)=>{
-    navigate(`/user-posts/${data.userName}`)
-  }
+  const userPosts = async (data) => {
+    navigate(`/user-posts/${data.userName}`);
+  };
+
+  const sendMail = async () => {
+    if (!userData.emailVerification) {
+      try {
+        const status = await authService.sendVerificationMail();
+        if (status) {
+          dispatch(updateStatus({ text: "Email Sent", error: false }));
+          setTimeout(() => {
+            dispatch(clearStatus());
+          }, 3000);
+        }
+      } catch (error) {
+        dispatch(updateStatus({ text: error.message, error: true }));
+        setTimeout(() => {
+          dispatch(clearStatus());
+        }, 3000);
+      }
+    } else {
+      dispatch(
+        updateStatus({ text: "Email is Already Verified", error: false })
+      );
+      setTimeout(() => {
+        dispatch(clearStatus());
+      }, 3000);
+    }
+  };
+
+  useEffect(() => {
+    try {
+      if (userId && secret) {
+        authService
+          .confirmVerification(userId, secret)
+          .then(() => {
+            // need to get current user data again since user data is updated
+            authService
+              .getCurrentUser()
+              .then((user) => {
+                dispatch(authLogin({userData:user}));
+                dispatch(
+                  updateStatus({
+                    text: "Email Verification Done",
+                    error: false,
+                  })
+                );
+                setTimeout(() => {
+                  dispatch(clearStatus());
+                }, 3000);
+                navigate("/profile");
+              })
+              .catch((error) => {
+                dispatch(updateStatus({ text: error.message, error: true }));
+                setTimeout(() => {
+                  dispatch(clearStatus());
+                }, 3000);
+                navigate("/profile");
+              });
+          })
+          .catch((error) => {
+            dispatch(updateStatus({ text: error.message, error: true }));
+            setTimeout(() => {
+              dispatch(clearStatus());
+            }, 3000);
+            navigate("/profile");
+          });
+      }
+    } catch (error) {
+      dispatch(updateStatus({ text: error.message, error: true }));
+      setTimeout(() => {
+        dispatch(clearStatus());
+      }, 3000);
+      navigate("/profile");
+    }
+  }, [userId, secret]);
 
   return (
     <div className="w-[90%] md:pl-2  text-white flex flex-col md:justify-start  md:items-start items-center  h-full md:py-1 py-4 pb-20 md:pb-0 md:gap-2 gap-4">
@@ -174,15 +246,30 @@ export default function profile() {
               <label className="text-center md:text-start" htmlFor="email">
                 Email
               </label>
+              {/* <div className="w-full flex justify-center  items-center border border-[#6EEB83]"> */}
               <Input
-              readOnly
-                className="outline-none bg-transparent text-center md:text-start border-2 border-[#6EEB83]  py-4 px-6 text-[#A5A5A5]"
+                readOnly
+                className="outline-none  bg-transparent border border-[#6EEB83] text-center md:text-start   py-4 px-6 text-[#A5A5A5]"
                 type="text"
                 name="email"
                 id="email"
                 {...register("email", { required: true })}
                 placeholder="Enter a valid email"
               />
+              
+              <p
+                onClick={handleSubmit(sendMail)}
+                className={`text-base ${
+                  userData && userData.emailVerification
+                    ? "text-[#6e8beb] "
+                    : "text-[#FF5E5B] cursor-pointer"
+                } flex md:justify-start justify-center items-center gap-1 `}
+              >
+                {userData && userData.emailVerification ? <LuMailCheck /> : <LuMailX />}{" "}
+                {userData && userData.emailVerification
+                  ? "email is verified"
+                  : "email is not verified "}{" "}
+              </p>
             </div>
 
             {/* username */}
@@ -209,8 +296,9 @@ export default function profile() {
             </Button>
 
             <Button
-            onClick={handleSubmit(userPosts)}
-             className="bg-[#6EEB83]  text-black font-bold py-4 px-6">
+              onClick={handleSubmit(userPosts)}
+              className="bg-[#6EEB83]  text-black font-bold py-4 px-6"
+            >
               Your Posts
             </Button>
           </div>
@@ -232,10 +320,10 @@ export default function profile() {
                     selectedImage
                       ? selectedImage
                       : { ...userData }.prefs.avatar
-                        ? authService.getAvatarPreview(
+                      ? authService.getAvatarPreview(
                           { ...userData }.prefs.avatar
                         )
-                        : authService.getUserAvatar(userData.name)
+                      : authService.getUserAvatar(userData.name)
                   }
                   alt="profile-img"
                 />

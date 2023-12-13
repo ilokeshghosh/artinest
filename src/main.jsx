@@ -57,7 +57,8 @@ const router = createBrowserRouter([
             {" "}
             <Profile />
           </AuthLayout>
-        ),
+        )
+       
       },
       {
         path: "/search",
