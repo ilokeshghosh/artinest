@@ -1,28 +1,35 @@
 # Project Title: Artinest Blog Platform
 ## Overview
-Artinest Blog Platform is a modern web application built with React.js for the frontend and powered by Appwrite as the Backend as a Service (BaaS). This project provides a seamless and user-friendly interface for registered users to create, read, update, and delete blog posts,along with additional features like profile picture modification and advanced blog search capabilities.
+Artinest Blog Platform is a modern web application built with React.js for the frontend and powered by Appwrite as the Backend as a Service (BaaS). This project provides a seamless and user-friendly interface for registered users to create, read, update, and delete blog posts, along with additional features like profile picture and name modification, email verification and advanced blog and username search capabilities.
 
 ## Features
-### User Authentication
-Artinest Blog Platform incorporates secure user authentication powered by Appwrite. Users can register for an account, log in, and enjoy a personalized blogging experience.
+### 🔒 User Authentication
+Artinest Blog Platform incorporates secure user authentication powered by Appwrite. Users can register for an account, log in, reset password and enjoy a personalized blogging experience.
 
-### Create and Publish Posts
+### 📝 Create and Publish Posts
 Registered users can effortlessly create new blog posts using a simple and intuitive interface. The platform supports rich text editing, enabling users to express themselves creatively.
 
-### Read and Explore
+### 📖 Read and Explore
 Registered users can explore a collection of engaging blog posts. The platform offers a responsive and aesthetically pleasing design for an optimal reading experience.
 
-### Update and Edit
+### ✍🏽 Update and Edit
 Users have the ability to edit and update their published blog posts at any time. The editing interface is user-friendly, allowing authors to refine their content with ease.
 
-### Delete Posts
+### 🗑️ Delete Posts
 For content management, registered users can delete their blog posts when needed. This feature ensures that users have control over their published content.
 
-### Modify Profile Picture and Name
+### 🗿 Modify Profile Picture and Name
 Artinest Blog Platform enables users to personalize their profiles by uploading and modifying their profile pictures and name. This feature adds a personal touch to user accounts.
 
-### Advanced Search
-Users can efficiently find specific blog posts by utilizing the advanced search functionality. The platform supports searching by hashtags making it easier for users to discover relevant content.
+### 🕵🏼‍♂️ Advanced Search
+Users can efficiently find specific blog posts by utilizing the advanced search functionality. The platform supports searching by hashtags and username making it easier for users to discover relevant content.
+
+### 🗝️ Forgot Password
+In case users forget their passwords, Artinest Blog Platform now includes a "Forgot Password" feature. Users can reset their passwords through a secure and straightforward process.
+
+### 🙎🏽‍♂️ Email Verification 
+To enhance security and verify user accounts, Artinest Blog Platform now includes an email verification process. Users receive a verification email upon registration to ensure the validity of their accounts.
+
 
 ## Getting Started
 To experience Artinest Blog Platform, follow these simple steps:
@@ -33,23 +40,40 @@ To experience Artinest Blog Platform, follow these simple steps:
 ![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/signup_F8HTH8T_k.png?updatedAt=1702318519136)
 *Sign-Up*
 
-3. Start creating, reading, updating, and deleting your blog posts.
+3. Reset password in case you forget your password 
 
-![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/create-blog_wxsax3uvee.png?updatedAt=1702318865626)
+![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/generate%20reset%20password%20link_btG-CXcJQ7.png?updatedAt=1702556178543)
+*Generate Reset Password link*
+
+![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/reset%20password_0FCgrACdUG.png?updatedAt=1702556178537)
+*Reset Password*
+
+4. Start creating, reading, updating, and deleting your blog posts.
+
+![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/create-post_8QN7TXCst.png?updatedAt=1702554461850)
 *Create Post*
 
-![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/read-post_8UPzgYFZa.png?updatedAt=1702319113826)
+![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/read-post_qqPDBzXSF.png?updatedAt=1702554652240)
 *Read Post*
 
-4. Customize your profile by modifying your profile picture and name.
+5. Customize your profile by modifying your profile picture , name and verify your email and you can see all your posts in one place.
 
-![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/profile_APZ7rrIkn.png?updatedAt=1702319235808)
+![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/profile_oe72B0Bqsc.png?updatedAt=1702556178264)
 *User Profile*
 
-5. Utilize the advanced search to discover blog posts based on hashtags.
+click on '`email is not verified`' to get email with verification link to verify your email
+![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/email%20verified_C30hEgsmzb.png?updatedAt=1702556178266)
+*Email Verification*
 
-![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/search-post_ezcL081Wqy.png?updatedAt=1702319413217)
+![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/user-posts_y3e0jD0CCT.png?updatedAt=1702556178233)
+*User Posts*
+
+
+6. Utilize the advanced search to discover blog posts based on hashtags.
+
+![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/search-post_73H5IJ3FNf.png?updatedAt=1702556178210)
 *Search Post*
+
 
 ## Technologies Used
 - Frontend: React.js (<img src="https://vitejs.dev/logo.svg" width="20" alt="React Logo">)
