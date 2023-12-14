@@ -17,6 +17,8 @@ import { Provider } from "react-redux";
 import Construction from "./pages/Construction.jsx";
 import Error from "./pages/Error.jsx";
 import UserPosts from "./pages/UserPosts.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
+import ForgotPassoword from "./pages/ForgotPassword.jsx";
 
 const router = createBrowserRouter([
   {
@@ -57,8 +59,7 @@ const router = createBrowserRouter([
             {" "}
             <Profile />
           </AuthLayout>
-        )
-       
+        ),
       },
       {
         path: "/search",
@@ -68,14 +69,16 @@ const router = createBrowserRouter([
             <Search />
           </AuthLayout>
         ),
-       
-      },{
-        path:'/user-posts/:userName',
+      },
+      {
+        path: "/user-posts/:userName",
         // element:<UserPosts/>
-        element:( <AuthLayout authentication>
-          {" "}
-          <UserPosts/>
-        </AuthLayout>)
+        element: (
+          <AuthLayout authentication>
+            {" "}
+            <UserPosts />
+          </AuthLayout>
+        ),
       },
       {
         path: "/post/:slug",
@@ -99,17 +102,31 @@ const router = createBrowserRouter([
       </AuthLayout>
     ),
   },
+  {
+    path: "/reset-password",
+    element: (
+      <AuthLayout authentication={false}>
+        <ResetPassword />
+      </AuthLayout>
+    ),
+  },
+  {
+    path: "/forgot-password",
+    element: (
+      <AuthLayout authentication={false}>
+        <ForgotPassoword />
+      </AuthLayout>
+    ),
+  },
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-
       {/* main router */}
       <RouterProvider router={router} />
 
       {/* maintenance page */}
       {/* <Construction /> */}
-
     </Provider>
   </React.StrictMode>
 );

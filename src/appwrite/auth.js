@@ -129,22 +129,55 @@ export class AuthService {
     }
 
 
+    // mail services
+
+    // email verification
     // function for email verification
-    async sendVerificationMail(){
+    async sendVerificationMail() {
         try {
-            await this.account.createVerification('http://localhost:5173/profile/')
+            // call appwrite api : Create email verification (see appwrite docs for reference)
+            await this.account.createVerification('https://artinest.netlify.app/profile')
             return true
         } catch (error) {
             throw error
         }
     }
 
+    // function to confirm email verification 
+    async confirmVerification(userId, secret) {
+        try {
+            // call appwrite api : Create email verification (confirmation) (see appwrite docs for reference)
+            await this.account.updateVerification(userId, secret)
+        } catch (error) {
+            // if error is caught then throw the error (it will be handled when we call auth service)
+            throw error;
+        }
+    }
 
-    async confirmVerification(userId,secret){
+
+    // reset password
+    // function to reset password vai email
+    async sendPasswordResetMail(email) {
+        try {
+             // call appwrite api : Create password recovery (see appwrite docs for reference)
+            // await this.account.createRecovery(email, 'http://localhost:5173/reset-password')
+            await this.account.createRecovery(email, 'https://artinest.netlify.app/reset-password')
+            return true
+        } catch (error) {
+            // if error is caught then throw the error (it will be handled when we call auth service)
+            throw error;
+        }
+    }
+
+    // function to confirm reset password via email 
+    async confirmPasswordResetMail(userId, secret, password, repeatPassword){
         try{
-            await this.account.updateVerification(userId,secret)
+             // call appwrite api : Create password recovery (confirmation) (see appwrite docs for reference)
+            await this.account.updateRecovery(userId, secret, password, repeatPassword)
+            return true;
         }catch(error){
-            throw error
+            // if error is caught then throw the error (it will be handled when we call auth service)
+            throw error;
         }
     }
 
