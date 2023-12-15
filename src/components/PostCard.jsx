@@ -27,7 +27,7 @@ export default function PostCard({
     "DEC",
   ];
   return (
-    <div className="md:w-[90%]  w-[100%] py-5 mb-5  md:h-[250px] flex md:flex-row flex-col-reverse md:gap-6 gap-12 justify-end md:justify-start">
+    <div className="md:w-[90%]  w-[100%] py-5 mb-5  md:h-[250px] flex md:flex-row flex-col-reverse md:gap-6 gap-3 justify-end md:justify-start">
       {/* meta data */}
       <div
         className=" md:h-full   md:w-[5%] w-full px-2 md:px-0 flex md:flex-col flex-row md:items-end justify-between md:justify-start items-center "
@@ -77,7 +77,7 @@ export default function PostCard({
           </div>
 
           {/* hastag section */}
-          <div className="w-full h-12  flex flex-wrap gap-4 justify-center items-center md:justify-start ">
+          <div className="w-full h-18  overflow-y-auto no-scrollbar  flex flex-wrap gap-4 justify-center items-center md:justify-start ">
             {hashTags &&
               hashTags.split(" ").map((tag) => (
                 <button

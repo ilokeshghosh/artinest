@@ -4,8 +4,8 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import { setPosts } from "../store/postSlice";
 import appwriteService from "../appwrite/config";
 import { Button, Container } from "../components";
-import parse from "html-react-parser";
-import { useEffect } from "react";
+import parse,{ domToReact } from "html-react-parser";
+import React, { useEffect } from "react";
 import { FaEdit, MdOutlineDeleteForever } from "../icons";
 import { updateStatus, clearStatus } from "../store/statusSlice";
 
@@ -66,6 +66,21 @@ export default function Post() {
     "NOV",
     "DEC",
   ];
+
+
+  const customReplace = (node, index, nodes) => {
+    if (node.type === 'tag') {
+      // Check if the tag is a heading tag (h1, h2, h3, etc.) even with inline styles
+      if (node.name.match(/^h[1-6]$/i)) {
+        // If it's a heading tag or a paragraph with the specific style, treat it as a heading
+        const level = node.name === 'p' ? 1 : parseInt(node.name.charAt(1), 10); // Extract heading level
+        const style = { color: '#6EEB83',fontSize: `${20 + level}px` }; // Add style for the color
+        return React.createElement(`h${level}`, { style }, domToReact(node.children, customReplace));
+      } else if (node.name === 'p') {
+        return <p>{domToReact(node.children, customReplace)}</p>;
+      }
+    }
+  };
   return post ? (
     <Container>
       <div className="overflow-y-auto no-scrollbar py-1 gap-20 md:gap-0 w-full flex flex-col md:flex-row md:justify-between justify-start">
@@ -107,7 +122,8 @@ export default function Post() {
             className="w-full h-auto pb-6 md:text-start text-center browser-css"
             style={{ fontFamily: "Lexend Deca, sans-serif" }}
           >
-            {parse(post.content)}
+            {/* {parse(post.content)} */}
+            {parse(post.content, { replace: customReplace })}
           </div>
 
           {/* hash tags */}
