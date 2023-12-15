@@ -19,6 +19,7 @@ import Error from "./pages/Error.jsx";
 import UserPosts from "./pages/UserPosts.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import ForgotPassoword from "./pages/ForgotPassword.jsx";
+import GuestPost from "./pages/GuestPost.jsx";
 
 const router = createBrowserRouter([
   {
@@ -117,7 +118,14 @@ const router = createBrowserRouter([
         <ForgotPassoword />
       </AuthLayout>
     ),
-  },
+  },{
+    path:'/guest/post/:slug',
+    element:(
+      <AuthLayout authentication={false}>
+        <GuestPost />
+      </AuthLayout>
+    ),
+  }
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

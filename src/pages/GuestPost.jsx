@@ -1,22 +1,16 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { setPosts } from "../store/postSlice";
 import appwriteService from "../appwrite/config";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { setPosts } from "../store/postSlice";
 import { Button, Container } from "../components";
 import parse, { domToReact } from "html-react-parser";
-import React, { useEffect } from "react";
-import { FaEdit, MdOutlineDeleteForever, CiShare2, BsClipboard2Check } from "../icons";
-import { updateStatus, clearStatus } from "../store/statusSlice";
-
-export default function Post() {
-  const [post, setPost] = useState(null);
-  const [isCopied, setIsCopied] = useState(false);
+export default function GuestPost() {
   const posts = useSelector((state) => state.post.posts);
+  const [post, setPost] = useState(null);
   const { slug } = useParams();
   const navigate = useNavigate();
-  const userData = useSelector((state) => state.auth.userData);
-  const isAuthor = post && userData ? post.userId === userData.$id : false;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,6 +25,7 @@ export default function Post() {
   useEffect(() => {
     if (slug) {
       const currentPost = posts.find((post) => post.$id === slug);
+      console.log(currentPost);
       setPost(currentPost);
     } else {
       dispatch(updateStatus({ text: "Post Not Found", error: true }));
@@ -40,18 +35,6 @@ export default function Post() {
       navigate("/");
     }
   }, [slug, navigate, posts]);
-
-  const deletePost = () => {
-    appwriteService.deletePost(post.$id).then((status) => {
-      if (status) {
-        dispatch(updateStatus({ text: "Post Deleted", error: false }));
-        setTimeout(() => {
-          dispatch(clearStatus());
-        }, 3000);
-        navigate("/");
-      }
-    });
-  };
 
   const months = [
     "JAN",
@@ -85,27 +68,11 @@ export default function Post() {
       }
     }
   };
-
-
-  const handleShare = (slug) => {
-    const dummyInput = document.createElement('input');
-    dummyInput.value = `https://artinest.netlify.app/guest/post/${slug}`;
-    document.body.appendChild(dummyInput);
-    dummyInput.select();
-    document.execCommand('copy');
-
-    document.body.removeChild(dummyInput);
-    setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 2000);
-  }
-
   return post ? (
-    <Container>
-      <div className="overflow-y-auto no-scrollbar py-1 gap-20 md:gap-0 w-full flex flex-col md:flex-row md:justify-between justify-start">
-        {/* left section */}
-        <div className="md:w-3/4 w-full  ">
+    <div className="bg-[#272727]  text-white w-full   md:py-20 py-2 pb-4 flex justify-center items-center ">
+      <div className="gap-20 md:gap-0  w-[95%] md:w-[70%]  flex flex-col md:flex-row  md:justify-between items-center justify-start">
+        {/* post content section */}
+        <div className="w-full no-scrollbar overflow-y-auto    flex flex-col justify-center ">
           {/* meta data and title */}
           <div className="flex flex-col justify-center md:items-start items-center gap-2 mb-5 ">
             <h1
@@ -158,42 +125,21 @@ export default function Post() {
             ))}
           </div>
         </div>
-
-        {/* right section */}
-        <div
-          className="md:w-52 w-full "
-          style={{ fontFamily: "Lexend Deca, sans-serif" }}
-        >
-          {isAuthor && (
-            <div className="flex md:gap-2 gap-5 items-center md:justify-end justify-center ">
-
-              <div className="flex justify-end items-center  w-[75%]">
-                <Link to={`/edit-post/${post.$id}`}>
-                  <Button className="text-[#6EEB83] text-3xl  py-0 px-0 flex justify-center items-center gap-2">
-                    <FaEdit />{" "}
-                    <span className="text-base text-white font-bold">Edit</span>
-                  </Button>
-                </Link>
-                <Button
-                  className="text-[#6EEB83] text-3xl  py-0 px-0 flex justify-center items-center gap-1"
-                  onClick={() => handleShare(slug)}
-                >
-                  {isCopied ? (<><BsClipboard2Check /><span className="text-base text-white font-bold">Copied</span></>) : (<><CiShare2 /><span className="text-base text-white font-bold">Share</span></>)} {" "}
-
-                </Button>
-              </div>
-
-              <Button
-                className="text-[#FF5E5B] text-4xl  py-0 px-0 flex justify-center items-center gap-1"
-                onClick={deletePost}
-              >
-                <MdOutlineDeleteForever />{" "}
-                <span className="text-base text-white font-bold">Delete</span>
-              </Button>
-            </div>
-          )}
-        </div>
+      </div>
+    </div>
+  ) : (
+    <Container className="bg-[#272727] no-scrollbar overflow-y-auto md:justify-center md:items-center  w-full  md:pl-0 pb-0 py-0">
+      <div
+        className="gap-20 md:gap-10 w-[100%] text-center flex flex-col   md:justify-between items-center justify-start  font-bold "
+        style={{ fontFamily: "Lexend Deca, sans-serif" }}
+      >
+        <h1 className="text-[#FF5E5B] text-3xl">🚧💀 Post not Found ☠️🚧</h1>
+        <Link to={"https://artinest.netlify.app/login"}>
+          <Button className="border border-[#6EEB83] text-xl text-[#6EEB83]">
+            Back To Origin
+          </Button>
+        </Link>
       </div>
     </Container>
-  ) : null;
+  );
 }
