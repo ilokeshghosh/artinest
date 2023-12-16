@@ -10,7 +10,7 @@ Artinest Blog Platform incorporates secure user authentication powered by Appwri
 Registered users can effortlessly create new blog posts using a simple and intuitive interface. The platform supports rich text editing, enabling users to express themselves creatively.
 
 ### 📖 Read and Explore
-Registered users can explore a collection of engaging blog posts. The platform offers a responsive and aesthetically pleasing design for an optimal reading experience.
+Registered users can explore a collection of engaging blog posts and also share blog posts. The platform offers a responsive and aesthetically pleasing design for an optimal reading experience.
 
 ### ✍🏽 Update and Edit
 Users have the ability to edit and update their published blog posts at any time. The editing interface is user-friendly, allowing authors to refine their content with ease.
@@ -48,12 +48,12 @@ To experience Artinest Blog Platform, follow these simple steps:
 ![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/reset%20password_0FCgrACdUG.png?updatedAt=1702556178537)
 *Reset Password*
 
-4. Start creating, reading, updating, and deleting your blog posts.
+4. Start creating, reading, updating, deleting and share your blog posts.
 
 ![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/create-post_8QN7TXCst.png?updatedAt=1702554461850)
 *Create Post*
 
-![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/read-post_qqPDBzXSF.png?updatedAt=1702554652240)
+![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/read-post_euDjvlKBm.png?updatedAt=1702739119424)
 *Read Post*
 
 5. Customize your profile by modifying your profile picture , name and verify your email and you can see all your posts in one place.
@@ -74,6 +74,11 @@ click on '`email is not verified`' to get email with verification link to verify
 ![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/search-post_73H5IJ3FNf.png?updatedAt=1702556178210)
 *Search Post*
 
+7. 🪄 Tips and Tricks ⭐
+
+While creating or updating new post you can change the view of text editor to fullscreen, click on `view` and then  Click `Fullscreen` or use use keyboard shortcut `Ctrl+Shift+F`
+![Artinest Blog Platform](https://ik.imagekit.io/8fgpvoiai/artinest/documentation/tips%20and%20tricks%201_xOSGxQ53G.png?updatedAt=1702739844245)
+*FullScreen Text Editor*
 
 ## Technologies Used
 - Frontend: React.js (<img src="https://vitejs.dev/logo.svg" width="20" alt="React Logo">)
