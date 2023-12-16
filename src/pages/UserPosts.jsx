@@ -99,7 +99,9 @@ export default function UserPosts() {
                     <div className="md:w-[90%] overflow-y-auto no-scrollbar  w-full flex flex-col items-start md:mt-4 md:gap-16 gap-14 mb-1">
                         {/* card 1 */}
                         {userPosts &&
-                            userPosts.map((post) => (
+                            userPosts.slice().sort((a, b) => {
+                                return a.$createdAt > b.$createdAt ? -1 : 1;
+                            }).map((post) => (
                                 <div
                                     className="flex flex-col items-start gap-2 w-full"
                                     key={post.$id}

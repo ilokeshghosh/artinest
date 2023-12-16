@@ -66,11 +66,16 @@ export default function () {
 
         {/* post card gap */}
         <div className="py-10 pb-56">
-          {posts.map((post) => (
-            <div className="flex flex-col gap-10" key={post.$id}>
-              <PostCard {...post} />
-            </div>
-          ))}
+          {posts
+            .slice()
+            .sort((a, b) => {
+              return a.$createdAt > b.$createdAt ? -1 : 1;
+            })
+            .map((post) => (
+              <div className="flex flex-col gap-10" key={post.$id}>
+                <PostCard {...post} />
+              </div>
+            ))}
         </div>
       </div>
     </Container>
