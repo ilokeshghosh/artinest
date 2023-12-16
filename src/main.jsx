@@ -83,7 +83,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/post/:slug",
-        element: <Post />,
+        element: (
+          <AuthLayout authentication>
+            {" "}
+            <Post />
+          </AuthLayout>
+        ),
       },
     ],
   },
@@ -118,14 +123,15 @@ const router = createBrowserRouter([
         <ForgotPassoword />
       </AuthLayout>
     ),
-  },{
-    path:'/guest/post/:slug',
-    element:(
+  },
+  {
+    path: "/guest/post/:slug",
+    element: (
       <AuthLayout authentication={false}>
         <GuestPost />
       </AuthLayout>
     ),
-  }
+  },
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
