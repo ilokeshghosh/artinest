@@ -74,21 +74,51 @@ export default function Post() {
   ];
 
   const customReplace = (node, index, nodes) => {
+   
     if (node.type === "tag") {
-      // Check if the tag is a heading tag (h1, h2, h3, etc.) even with inline styles
       if (node.name.match(/^h[1-6]$/i)) {
-        // If it's a heading tag or a paragraph with the specific style, treat it as a heading
-        const level = node.name === "p" ? 1 : parseInt(node.name.charAt(1), 10); // Extract heading level
-        const style = { color: "#6EEB83", fontSize: `${20 + level}px` }; // Add style for the color
+        const level = node.name === "p" ? 1 : parseInt(node.name.charAt(1), 10); 
+        const style = { color: "#6EEB83", fontSize: `${20 + level}px` };
         return React.createElement(
           `h${level}`,
           { style },
           domToReact(node.children, customReplace)
         );
       } else if (node.name === "p") {
-        return <p>{domToReact(node.children, customReplace)}</p>;
+
+      } else if (node.name === "code") {
+        const codeStyle = {
+          backgroundColor: "black",
+          padding: "0.2em 0.4em",
+          borderRadius: "0.25em",
+          fontFamily: "monospace",
+          color: '#B4D4FF',
+          fontSize:'105%'
+        };
+        const codeContent = <code style={codeStyle}>{domToReact(node.children,customReplace)}</code>
+       return codeContent
+      }else if(node.name ==='ul'){
+        const liststyle={
+          listStyleType:'circle'
+        }
+        return React.createElement(
+          'l',
+          {liststyle},
+          domToReact(node.children, customReplace).filter(item => item !== '\n')
+        );
+      }
+      else if(node.name==='ol'){
+        const liststyle={
+          listStyleType:'upperRoman'
+        }
+        return React.createElement(
+          'l',
+          {liststyle},
+          domToReact(node.children, customReplace)
+        );
       }
     }
+    
   };
 
   const handleShare = (slug) => {
@@ -213,7 +243,6 @@ export default function Post() {
           </div>
         </div>
 
-
         {/* //! Not Used */}
         {/* right section not used*/}
         <div
@@ -261,8 +290,6 @@ export default function Post() {
             )}
           </div>
         </div>
-
-
       </div>
     </Container>
   ) : null;
