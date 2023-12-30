@@ -2,6 +2,7 @@
 ## Overview
 Artinest Blog Platform is a modern web application built with React.js for the frontend and powered by Appwrite as the Backend as a Service (BaaS). This project provides a seamless and user-friendly interface for registered users to create, read, update, and delete blog posts, along with additional features like profile picture and name modification, email verification and advanced blog and username search capabilities.
 
+
 ## Features
 ### 🔒 User Authentication
 Artinest Blog Platform incorporates secure user authentication powered by Appwrite. Users can register for an account, log in, reset password and enjoy a personalized blogging experience.
@@ -83,6 +84,10 @@ While creating or updating new post you can change the view of text editor to fu
 ## Technologies Used
 - Frontend: React.js (<img src="https://vitejs.dev/logo.svg" width="20" alt="React Logo">)
 - Backend: Appwrite (BaaS) (<img src="https://appwrite.io/assets/logotype/black.svg" width="80" alt="React Logo">)
+
+## Design 
+
+### 👉🏻 [Figma](https://www.figma.com/file/tPc8FnD9zqNt99GidHVAxO/blog-design?type=design&node-id=0%3A1&mode=design&t=EXAIMrjTz6AIRkZa-1) 👈🏻
 
 ## Deployment
 The project is currently deployed on Netlify and can be accessed at [Artinest Blog Platform](https://artinest.netlify.app).
