@@ -97,25 +97,6 @@ export default function Post() {
         };
         const codeContent = <code style={codeStyle}>{domToReact(node.children,customReplace)}</code>
        return codeContent
-      }else if(node.name ==='ul'){
-        const liststyle={
-          listStyleType:'circle'
-        }
-        return React.createElement(
-          'l',
-          {liststyle},
-          domToReact(node.children, customReplace).filter(item => item !== '\n')
-        );
-      }
-      else if(node.name==='ol'){
-        const liststyle={
-          listStyleType:'upperRoman'
-        }
-        return React.createElement(
-          'l',
-          {liststyle},
-          domToReact(node.children, customReplace)
-        );
       }
     }
     
